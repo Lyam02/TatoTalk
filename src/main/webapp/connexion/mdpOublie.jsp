@@ -68,7 +68,7 @@
             <p class="text-muted mb-4">
               Entrez votre e-mail pour réinitialiser votre mot de passe.
             </p>
-            <form action="votre-url-reset-mdp" method="post">
+            <form action="${pageContext.request.contextPath}/mdp-oublie" method="post">
 
               <div class="mb-3">
                 <input type="email" class="form-control form-control-lg bg-light border-0" id="email" name="email" placeholder="E-mail" required>

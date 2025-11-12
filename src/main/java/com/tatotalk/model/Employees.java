@@ -37,11 +37,15 @@ public class Employees {
     @Column(length = 150, nullable = true)
     public String service;
 
+    @Column(length = 100, nullable = false)
+    @NotEmpty
+    public String password;
+
     @ManyToOne
-    @JoinColumn(name = "roles_id")
+    @JoinColumn(name = "role_id")
     public Roles roles;
 
-    public Employees(String nom, String prenom, String email, String samaccountname, String displayname, String department, Roles roles, String service) {
+    public Employees(String nom, String prenom, String email, String samaccountname, String displayname, String department, Roles roles, String service, String password) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
@@ -50,6 +54,7 @@ public class Employees {
         this.department = department;
         this.roles = roles;
         this.service = service;
+        this.password = password;
     }
 
     public Employees() {
@@ -122,5 +127,13 @@ public class Employees {
 
     public void setRoles(Roles roles) {
         this.roles = roles;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

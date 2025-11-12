@@ -89,7 +89,7 @@
             </form>
 
             <div class="text-center mt-4">
-              <a href="index.jsp?unePage=2" class="text-decoration-none text-muted">Vous avez oublié votre mot de passe ?</a>
+              <a href="${pageContext.request.contextPath}/mdp-oublie" class="text-decoration-none text-muted">Vous avez oublié votre mot de passe ?</a>
             </div>
 
           </div>
