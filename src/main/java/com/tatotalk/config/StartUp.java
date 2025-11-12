@@ -13,5 +13,4 @@ public class StartUp implements ServletContextListener {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("tatotalk");
         sce.getServletContext().setAttribute("emf", emf);
     }
-
 }

@@ -18,5 +18,8 @@
       case 4:break;
     }
   %>
+
+<a href="conv">Nouvelle conversation</a>
+
 </body>
 </html>
