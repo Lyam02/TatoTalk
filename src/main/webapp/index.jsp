@@ -5,8 +5,18 @@
   <title>JSP - Hello World</title>
 </head>
 <body>
-<h1><%= "Hello World!" %></h1>
-<br/>
-<a href="hello-servlet">Hello Servlet</a>
+  <%
+    int unePage = 1;
+    if (request.getParameter("unePage") != null) {
+      unePage = Integer.parseInt(request.getParameter("unePage"));
+    }
+
+    switch (unePage) {
+      case 1:%><jsp:include page="connexion/connexion.jsp" /><% break;
+      case 2:%><jsp:include page="connexion/mdpOublie.jsp" /><% break;
+      case 3:%><jsp:include page="connexion/mdpOublie.jsp" /><% break;
+      case 4:break;
+    }
+  %>
 </body>
 </html>
