@@ -36,15 +36,21 @@ public class MessageController extends HttpServlet {
 
         int employeeId = Integer.parseInt(req.getParameter("employeeId"));
 
-        Employees employee = em.createQuery("select e from Employees e where e.id = :employeeId", Employees.class)
+        Employees employeeSendTo = em.createQuery("select e from Employees e where e.id = :employeeId", Employees.class)
                 .setParameter("employeeId", employeeId).getSingleResult();
 
         String message = req.getParameter("message");
 
+        int sessionUserId = (Integer) session.getAttribute("sessionUserId");
+
+        Employees employeeSendBy = em.createQuery("select e from Employees e where e.id = :sessionUserId", Employees.class)
+                .setParameter("sessionUserId", sessionUserId).getSingleResult();
+
         if(message != null){
             Messages messages = new Messages();
             messages.setMessage_content(message);
-            messages.setSendTo(employee);
+            messages.setSendTo(employeeSendTo);
+            messages.setSendBy(employeeSendBy);
             messages.setEdited_at(LocalDateTime.now());
             messages.setCreated_at(LocalDateTime.now());
 
@@ -53,12 +59,17 @@ public class MessageController extends HttpServlet {
             em.getTransaction().commit();
         }
 
-        List<Messages> messages = em.createQuery("select m from Messages m where m.sendTo.id = :employeeId", Messages.class)
-                .setParameter("employeeId", employeeId).getResultList();
+        List<Messages> messagesSendTo = em.createQuery("select m from Messages m where m.sendTo.id = :employeeId and m.sendBy.id = :sessionUserId", Messages.class)
+                .setParameter("employeeId", employeeId).setParameter("sessionUserId", sessionUserId).getResultList();
+
+        List<Messages> messagesSendBy = em.createQuery("select m from Messages m where m.sendTo.id = :sessionUserId and m.sendBy.id = :employeeId", Messages.class)
+                        .setParameter("sessionUserId", sessionUserId).setParameter("employeeId", employeeId).getResultList();
 
 
-        req.setAttribute("messages", messages);
-        req.setAttribute("employee", employee);
+        req.setAttribute("messagesSendTo", messagesSendTo);
+        req.setAttribute("messagesSendBy", messagesSendBy);
+        req.setAttribute("employeeSendTo", employeeSendTo);
+        req.setAttribute("employeeSendBy", employeeSendBy);
 
         em.close();
 
