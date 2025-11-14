@@ -90,7 +90,7 @@ public class Connexion extends HttpServlet {
             HttpSession session = request.getSession(true); // 'true' crée une session si elle n'existe pas
 
             // 5b. Stocker les infos de l'utilisateur en session
-            session.setAttribute("userId", utilisateur.getId());
+            session.setAttribute("sessionUserId", utilisateur.getId());
             //session.setAttribute("userEmail", utilisateur.getEmail());
             // Vous pouvez stocker d'autres infos (ex: nom)
 

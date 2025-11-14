@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import org.hibernate.Length;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @WebServlet("/mess")
@@ -21,27 +22,54 @@ public class MessageController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        HttpSession session = req.getSession();
+
+        try{
+            int sessionUserId = (Integer) session.getAttribute("sessionUserId");
+        }catch (NullPointerException ex){
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
         EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         EntityManager em = emf.createEntityManager();
 
         int employeeId = Integer.parseInt(req.getParameter("employeeId"));
 
+        Employees employeeSendTo = em.createQuery("select e from Employees e where e.id = :employeeId", Employees.class)
+                .setParameter("employeeId", employeeId).getSingleResult();
+
         String message = req.getParameter("message");
+
+        int sessionUserId = (Integer) session.getAttribute("sessionUserId");
+
+        Employees employeeSendBy = em.createQuery("select e from Employees e where e.id = :sessionUserId", Employees.class)
+                .setParameter("sessionUserId", sessionUserId).getSingleResult();
 
         if(message != null){
             Messages messages = new Messages();
-            messages.setMessage_content();
+            messages.setMessage_content(message);
+            messages.setSendTo(employeeSendTo);
+            messages.setSendBy(employeeSendBy);
+            messages.setEdited_at(LocalDateTime.now());
+            messages.setCreated_at(LocalDateTime.now());
+
+            em.getTransaction().begin();
+            em.persist(messages);
+            em.getTransaction().commit();
         }
 
-        Employees employee = em.createQuery("select e from Employees e where e.id = :employeeId", Employees.class)
-                .setParameter("employeeId", employeeId).getSingleResult();
+        List<Messages> messagesSendTo = em.createQuery("select m from Messages m where m.sendTo.id = :employeeId and m.sendBy.id = :sessionUserId", Messages.class)
+                .setParameter("employeeId", employeeId).setParameter("sessionUserId", sessionUserId).getResultList();
 
-        List<Messages> messages = em.createQuery("select m from Messages m where m.sendTo.id = :employeeId", Messages.class)
-                .setParameter("employeeId", employeeId).getResultList();
+        List<Messages> messagesSendBy = em.createQuery("select m from Messages m where m.sendTo.id = :sessionUserId and m.sendBy.id = :employeeId", Messages.class)
+                        .setParameter("sessionUserId", sessionUserId).setParameter("employeeId", employeeId).getResultList();
 
 
-        req.setAttribute("messages", messages);
-        req.setAttribute("employee", employee);
+        req.setAttribute("messagesSendTo", messagesSendTo);
+        req.setAttribute("messagesSendBy", messagesSendBy);
+        req.setAttribute("employeeSendTo", employeeSendTo);
+        req.setAttribute("employeeSendBy", employeeSendBy);
 
         em.close();
 

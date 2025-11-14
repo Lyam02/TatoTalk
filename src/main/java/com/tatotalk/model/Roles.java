@@ -9,7 +9,7 @@ public class Roles {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int Id;
+    public int id;
 
     @Column(nullable = false, length = 50)
     @NotEmpty
@@ -28,7 +28,7 @@ public class Roles {
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public String getName() {
