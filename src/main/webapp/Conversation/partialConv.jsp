@@ -17,7 +17,7 @@
 </div>
 
 <div class="p-3 border-top">
-  <form method="post">
+  <form action="mess" target="#messages">
     <div class="input-group">
       <input type="text" class="form-control bg-white me-1" name="message" placeholder="Tapez votre message...">
       <input type="hidden" value="${employee.id}" name="employeeId">

@@ -22,6 +22,16 @@ public class ConversationController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+
+        try{
+            int sessionUserId = (Integer) session.getAttribute("sessionUserId");
+        }catch (NullPointerException ex){
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
         EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         EntityManager em = emf.createEntityManager();
 
