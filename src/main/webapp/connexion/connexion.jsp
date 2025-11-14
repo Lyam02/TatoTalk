@@ -70,7 +70,18 @@
 
             <h2 class="h3 fw-bold mb-4">Connectez-vous</h2>
 
-            <form action="votre-url-de-login" method="post">
+            <%
+              String errorMessage = (String) request.getAttribute("errorMessage");
+              if (errorMessage != null && !errorMessage.isEmpty()) {
+            %>
+            <div class="alert alert-danger" role="alert">
+              <%= errorMessage %>
+            </div>
+            <%
+              }
+            %>
+
+            <form action="${pageContext.request.contextPath}/connexion" method="post">
 
               <div class="mb-3">
                 <input type="email" class="form-control form-control-lg bg-light border-0" id="email" name="email" placeholder="E-mail" required>

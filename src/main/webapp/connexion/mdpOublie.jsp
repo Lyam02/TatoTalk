@@ -43,7 +43,6 @@
 </head>
 
 <body class="d-flex align-items-center justify-content-center bg-white min-vh-100">
-
 <main class="container">
   <div class="row justify-content-center">
 
@@ -64,12 +63,22 @@
           <div class="col-md-8 p-5 bg-white position-relative">
 
             <h2 class="h3 fw-bold mb-3">Mot de passe oublié ?</h2>
-
+            <%
+              String errorMessage = (String) request.getAttribute("errorMessage");
+              if (errorMessage != null && !errorMessage.isEmpty()) {
+            %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>Erreur :</strong>
+              <%= errorMessage %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <%
+              }
+            %>
             <p class="text-muted mb-4">
               Entrez votre e-mail pour réinitialiser votre mot de passe.
             </p>
             <form action="${pageContext.request.contextPath}/mdp-oublie" method="post">
-
               <div class="mb-3">
                 <input type="email" class="form-control form-control-lg bg-light border-0" id="email" name="email" placeholder="E-mail" required>
               </div>
@@ -79,7 +88,6 @@
                   Réinitialiser mon mot de passe
                 </button>
               </div>
-
             </form>
 
             <div class="text-center mt-4">
