@@ -69,7 +69,21 @@
           <div class="col-md-8 p-5 bg-white position-relative">
 
             <h2 class="h3 fw-bold mb-4">Connectez-vous</h2>
+            <%-- BLOC SUCCÈS (pour le retour après reset MDP) --%>
+            <%
+              String successMessage = (String) session.getAttribute("successMessage");
+              if (successMessage != null && !successMessage.isEmpty()) {
+            %>
+            <div class="alert alert-success" role="alert">
+              <%= successMessage %>
+            </div>
+            <%
+                // Vider le message pour ne pas le ré-afficher
+                session.removeAttribute("successMessage");
+              }
+            %>
 
+            <%-- BLOC ERREUR (pour les échecs de connexion) --%>
             <%
               String errorMessage = (String) request.getAttribute("errorMessage");
               if (errorMessage != null && !errorMessage.isEmpty()) {
@@ -80,7 +94,6 @@
             <%
               }
             %>
-
             <form action="${pageContext.request.contextPath}/connexion" method="post">
 
               <div class="mb-3">

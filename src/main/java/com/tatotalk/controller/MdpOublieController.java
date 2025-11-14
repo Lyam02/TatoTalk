@@ -1,13 +1,12 @@
 package com.tatotalk.controller;
 
+import com.tatotalk.model.Employees;
+import com.tatotalk.model.PasswordToken;
 import jakarta.mail.*;
 import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.Query;
+import jakarta.persistence.*;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -54,17 +55,85 @@ public class MdpOublieController extends HttpServlet {
         // --- ÉTAPE 3 : Si oui, générer le token et envoyer l'e-mail ---
         if (userExiste) {
             try {
+
                 // ... (votre logique pour générer le token) ...
                 String token = UUID.randomUUID().toString();
 
-                // ... (votre logique pour sauvegarder le token en BDD) ...
+
+                // --- DÉBUT : Logique pour sauvegarder le token en BDD ---
+                EntityManager em = null;
+                try {
+                    // 1. Obtenir un EntityManager et démarrer une transaction
+                    em = emf.createEntityManager();
+                    em.getTransaction().begin();
+
+                    // 2. Trouver l'employé(e) lié(e) à cet e-mail
+                    TypedQuery<Employees> query = em.createQuery(
+                            "SELECT e FROM Employees e WHERE e.email = :email", Employees.class);
+                    query.setParameter("email", email);
+                    Employees employeConcerne = query.getSingleResult();
+
+
+                    // 3. --- NOUVELLE LOGIQUE : CHERCHER UN TOKEN EXISTANT ---
+                    PasswordToken tokenExistant = null;
+                    try {
+                        // On cherche un token lié à cet employé
+                        TypedQuery<PasswordToken> tokenQuery = em.createQuery(
+                                "SELECT t FROM PasswordToken t WHERE t.Id_Employee = :employee", PasswordToken.class);
+                        tokenQuery.setParameter("employee", employeConcerne);
+
+                        tokenExistant = tokenQuery.getSingleResult(); // Ceci lèvera une exception si non trouvé
+
+                    } catch (jakarta.persistence.NoResultException e) {
+                        // C'est normal, l'utilisateur n'avait pas de token.
+                        tokenExistant = null;
+                    }
+
+
+                    // 4. --- DÉCISION : METTRE À JOUR OU CRÉER ? ---
+                    if (tokenExistant != null) {
+                        // UN TOKEN EXISTE DÉJÀ : On le met à jour (merge)
+                        System.out.println("Mise à jour du token pour l'employé ID: " + employeConcerne.getId());
+                        tokenExistant.setToken(token);
+                        tokenExistant.setDate_reset_expiration(LocalDateTime.now().plusMinutes(30)); // (Version recommandée)
+
+                        em.merge(tokenExistant); // merge = UPDATE
+
+                    } else {
+                        // AUCUN TOKEN N'EXISTE : On en crée un (persist)
+                        System.out.println("Création d'un nouveau token pour l'employé ID: " + employeConcerne.getId());
+                        PasswordToken nouveauToken = new PasswordToken();
+                        nouveauToken.setToken(token);
+                        nouveauToken.setId_Employee(employeConcerne);
+                        nouveauToken.setDate_reset_expiration(LocalDateTime.now().plusMinutes(30)); // (Version recommandée)
+
+                        em.persist(nouveauToken); // persist = INSERT
+                    }
+
+                    // 5. Valider la transaction
+                    em.getTransaction().commit();
+
+                } catch (Exception e) {
+                    if (em != null && em.getTransaction().isActive()) {
+                        em.getTransaction().rollback();
+                    }
+                    e.printStackTrace();
+                } finally {
+                    if (em != null) {
+                        em.close();
+                    }
+                }
+                // --- FIN : Logique pour sauvegarder le token en BDD ---
+
+
+
 
                 // ... (votre logique pour construire le lien) ...
                 String resetLink = request.getScheme() + "://" +    // (1)
                         request.getServerName() + ":" +             // (2)
                         request.getServerPort() +                   // (3)
                         request.getContextPath() +                  // (4)
-                        "/nouveau-mdp?token=" + token;              // (5)
+                        "/newMdp?token=" + token;              // (5)
 
                 // ... (votre logique pour envoyer l'e-mail)
                 // fonction envoie eMail
@@ -93,14 +162,19 @@ public class MdpOublieController extends HttpServlet {
             // --- ÉTAPE 4 : Rediriger vers la page de succès ---
             // On utilise "sendRedirect" ici, car c'est une action terminée.
             // L'URL dans le navigateur du client va changer.
-            response.sendRedirect(request.getContextPath() + "/connexion/connexion.jsp");
+          //  response.sendRedirect(request.getContextPath() + "/connexion/connexion.jsp");
+            // 1. Définir le message d'erreur
+            request.setAttribute("successMessage", "Si cette adresse e-mail est dans nos dossiers, un lien de réinitialisation a été envoyé.");
 
+            // 2. Transférer (forward) vers la page (identique)
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/connexion/mdpOublie.jsp");
+            dispatcher.forward(request, response);
             System.out.println(email);
         }else {
             // --- L'UTILISATEUR N'EXISTE PAS ---
 
             // 1. Définir le message d'erreur
-            request.setAttribute("errorMessage", "Cette adresse e-mail n'existe pas.");
+            request.setAttribute("successMessage", "Si cette adresse e-mail est dans nos dossiers, un lien de réinitialisation a été envoyé.");
 
             // 2. Transférer (forward) vers la page (identique)
             RequestDispatcher dispatcher = request.getRequestDispatcher("/connexion/mdpOublie.jsp");

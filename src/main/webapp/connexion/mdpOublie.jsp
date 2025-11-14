@@ -64,13 +64,11 @@
 
             <h2 class="h3 fw-bold mb-3">Mot de passe oublié ?</h2>
             <%
-              String errorMessage = (String) request.getAttribute("errorMessage");
-              if (errorMessage != null && !errorMessage.isEmpty()) {
+              String successMessage = (String) request.getAttribute("successMessage");
+              if (successMessage != null && !successMessage.isEmpty()) {
             %>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <strong>Erreur :</strong>
-              <%= errorMessage %>
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="alert alert-success" role="alert">
+              <%= successMessage %>
             </div>
             <%
               }
