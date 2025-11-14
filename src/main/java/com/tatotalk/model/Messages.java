@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "messages")
@@ -26,17 +27,27 @@ public class Messages {
     @Column(nullable = false, columnDefinition = "DATETIME")
     public LocalDateTime created_at;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "conv_id")
     public Conversations conversations;
 
-    public Messages(int id, String message_content, String type, LocalDateTime edited_at, LocalDateTime created_at, Conversations conversations) {
+    @ManyToOne
+    @JoinColumn(name = "sendBy")
+    public Employees sendBy;
+
+    @ManyToOne
+    @JoinColumn(name = "sendTo")
+    public Employees sendTo;
+
+    public Messages(int id, String message_content, String type, LocalDateTime edited_at, LocalDateTime created_at, Conversations conversations, Employees sendBy, Employees sendTo) {
         this.id = id;
         this.message_content = message_content;
         this.type = type;
         this.edited_at = edited_at;
         this.created_at = created_at;
         this.conversations = conversations;
+        this.sendBy = sendBy;
+        this.sendTo = sendTo;
     }
 
     public Messages() {
@@ -53,6 +64,22 @@ public class Messages {
 
     public void setMessage_content(String message_content) {
         this.message_content = message_content;
+    }
+
+    public Employees getSendBy() {
+        return sendBy;
+    }
+
+    public void setSendBy(Employees sendBy) {
+        this.sendBy = sendBy;
+    }
+
+    public Employees getSendTo() {
+        return sendTo;
+    }
+
+    public void setSendTo(Employees sendTo) {
+        this.sendTo = sendTo;
     }
 
     public String getType() {

@@ -19,7 +19,7 @@
     }
   %>
 
-<a href="conv">Nouvelle conversation</a>
+<a href="home">Nouvelle conversation</a>
 
 </body>
 </html>
