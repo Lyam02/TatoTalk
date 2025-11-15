@@ -38,3 +38,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
+nom-du-fichier.txt
+persistence.xml

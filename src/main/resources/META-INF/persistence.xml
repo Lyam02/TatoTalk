@@ -17,11 +17,11 @@
     <properties>
 
       <property name="jakarta.persistence.jdbc.url"
-                value="jdbc:mysql://localhost:3306/Yato"/>
+                value="jdbc:mysql://localhost:3306/yato"/>
       <property name="jakarta.persistence.jdbc.user"
                 value="root"/>
       <property name="jakarta.persistence.jdbc.password"
-                value=""/>
+                value="040505"/>
       <property name="jakarta.persistence.jdbc.driver"
                 value="com.mysql.cj.jdbc.Driver"/>
 
