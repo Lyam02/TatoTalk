@@ -84,17 +84,6 @@
                         <%-- Le formulaire pointe vers un nouveau servlet (ex: /nouveau-mdp) --%>
                         <form action="${pageContext.request.contextPath}/newMdp" method="post">
 
-                            <%--
-                              CHAMP CACHÉ IMPORTANT :
-                              Ce champ est nécessaire pour renvoyer le token au servlet.
-                              Le servlet (doGet) doit récupérer le token de l'URL (?token=...)
-                              et le placer dans la request pour que ${token} fonctionne.
-
-                              Exemple dans le servlet doGet :
-                              String token = request.getParameter("token");
-                              request.setAttribute("token", token);
-                              dispatcher.forward(request, response);
-                            --%>
                             <input type="hidden" name="token" value="${token}" />
 
                             <div class="mb-3">

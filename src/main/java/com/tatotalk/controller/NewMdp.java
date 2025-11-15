@@ -1,6 +1,7 @@
 package com.tatotalk.controller; // Adaptez le package
 
 import com.tatotalk.model.Employees;
+import com.tatotalk.model.HistoriqueMdp;
 import com.tatotalk.model.PasswordToken;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @WebServlet("/newMdp")
 public class NewMdp extends HttpServlet {
@@ -74,13 +76,13 @@ public class NewMdp extends HttpServlet {
         // 2. Vérifier si les mots de passe correspondent
         if (mdp1 == null || mdp1.isEmpty() || !mdp1.equals(mdp2)) {
             request.setAttribute("errorMessage", "Les mots de passe ne correspondent pas.");
-            request.setAttribute("token", token); // Important : Renvoyer le token
+            request.setAttribute("token", token);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/connexion/newMdp.jsp");
             dispatcher.forward(request, response);
             return;
         }
 
-        // 3. Re-vérifier la validité du token (l'utilisateur a pu attendre 30+ min)
+        // 3. Re-vérifier la validité du token
         EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         EntityManager em = emf.createEntityManager();
 
@@ -91,7 +93,7 @@ public class NewMdp extends HttpServlet {
             request.setAttribute("errorMessage", "Votre session a expiré. Veuillez refaire une demande de réinitialisation.");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/connexion/mdpOublie.jsp");
             dispatcher.forward(request, response);
-            em.close();
+            if (em != null) em.close();
             return;
         }
 
@@ -102,17 +104,61 @@ public class NewMdp extends HttpServlet {
             // 4a. Récupérer l'employé lié au token
             Employees employe = tokenEntity.getId_Employee();
 
-            // 4b. Mettre à jour son mot de passe
-            // !! SÉCURITÉ !! : Vous devez HASHER le mot de passe ici (ex: avec BCrypt)
-            // employe.setMotDePasse(hasher.hash(mdp1));
-            employe.setPassword(mdp1); // Version non sécurisée pour test
+            // -----------------------------------------------------------------
+            // NOUVEAU : VÉRIFICATION DE L'HISTORIQUE (SANS HASHAGE)
+            // -----------------------------------------------------------------
+
+            // 1. Récupérer les 4 derniers mots de passe de l'historique
+            TypedQuery<String> historyQuery = em.createQuery(
+                    "SELECT h.old_password FROM HistoriqueMdp h " +
+                            "WHERE h.Id_Employee = :employee " +
+                            "ORDER BY h.date_historique DESC", String.class);
+            historyQuery.setParameter("employee", employe);
+            historyQuery.setMaxResults(5); // 5 derniers de l'historique
+            List<String> lastPasswords = historyQuery.getResultList();
+
+            // 2. Ajouter le mot de passe ACTUEL (c'est le 6ème)
+            if (employe.getPassword() != null && !employe.getPassword().isEmpty()) {
+                lastPasswords.add(employe.getPassword());
+            }
+
+            // 3. Vérifier si le NOUVEAU mdp (mdp1) est dans la liste
+            if (lastPasswords.contains(mdp1)) {
+                // Le mot de passe a déjà été utilisé
+                em.getTransaction().rollback(); // Annuler la transaction
+
+                request.setAttribute("errorMessage", "Vous ne pouvez pas réutiliser l'un de vos 5 derniers mots de passe.");
+                request.setAttribute("token", token);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/connexion/newMdp.jsp");
+                dispatcher.forward(request, response);
+
+                if (em != null) em.close(); // Fermer l'EM
+                return; // Arrêter l'exécution
+            }
+
+            // -----------------------------------------------------------------
+            // FIN DE LA VÉRIFICATION
+            // -----------------------------------------------------------------
+
+
+            // 4b. Sauvegarder l'ANCIEN mot de passe dans l'historique
+            if (employe.getPassword() != null && !employe.getPassword().isEmpty()) {
+                HistoriqueMdp oldMdpEntry = new HistoriqueMdp();
+                oldMdpEntry.setId_Employee(employe);
+                oldMdpEntry.setOld_password(employe.getPassword()); // Stocker l'ancien mdp
+                oldMdpEntry.setDate_historique(LocalDateTime.now());
+                em.persist(oldMdpEntry); // Sauvegarder le nouvel objet historique
+            }
+
+            // 4c. Mettre à jour son mot de passe
+            employe.setPassword(mdp1); // Version non sécurisée
 
             em.merge(employe); // Appliquer l'UPDATE sur l'employé
 
-            // 4c. Supprimer le token (il est à usage unique)
+            // 4d. Supprimer le token (il est à usage unique)
             em.remove(tokenEntity);
 
-            // 4d. Valider les changements
+            // 4e. Valider les changements
             em.getTransaction().commit();
 
         } catch (Exception e) {
@@ -134,8 +180,6 @@ public class NewMdp extends HttpServlet {
         }
 
         // 5. ----- SUCCÈS -----
-        // Rediriger vers la page de connexion avec un message de succès
-        // On utilise la session "flash" pour passer un message après redirection
         HttpSession session = request.getSession();
         session.setAttribute("successMessage", "Mot de passe réinitialisé avec succès. Vous pouvez vous connecter.");
         response.sendRedirect(request.getContextPath() + "/connexion");
