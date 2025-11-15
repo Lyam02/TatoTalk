@@ -26,7 +26,7 @@ public class HomeController extends HttpServlet {
         try{
             int sessionUserId = (Integer) session.getAttribute("sessionUserId");
         }catch (NullPointerException ex){
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
