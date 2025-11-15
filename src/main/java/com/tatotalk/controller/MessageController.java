@@ -59,15 +59,12 @@ public class MessageController extends HttpServlet {
             em.getTransaction().commit();
         }
 
-        List<Messages> messagesSendTo = em.createQuery("select m from Messages m where m.sendTo.id = :employeeId and m.sendBy.id = :sessionUserId", Messages.class)
+        List<Messages> messages = em.createQuery("select m from Messages m where (m.sendTo.id = :employeeId and m.sendBy.id = :sessionUserId) " +
+                        "or (m.sendTo.id = :sessionUserId and m.sendBy.id = :employeeId) order by m.edited_at", Messages.class)
                 .setParameter("employeeId", employeeId).setParameter("sessionUserId", sessionUserId).getResultList();
 
-        List<Messages> messagesSendBy = em.createQuery("select m from Messages m where m.sendTo.id = :sessionUserId and m.sendBy.id = :employeeId", Messages.class)
-                        .setParameter("sessionUserId", sessionUserId).setParameter("employeeId", employeeId).getResultList();
-
-
-        req.setAttribute("messagesSendTo", messagesSendTo);
-        req.setAttribute("messagesSendBy", messagesSendBy);
+        req.setAttribute("messages", messages);
+        /*req.setAttribute("messagesSendBy", messagesSendBy);*/
         req.setAttribute("employeeSendTo", employeeSendTo);
         req.setAttribute("employeeSendBy", employeeSendBy);
 
