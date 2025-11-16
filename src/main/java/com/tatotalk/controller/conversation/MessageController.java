@@ -1,4 +1,4 @@
-package com.tatotalk.controller;
+package com.tatotalk.controller.conversation;
 
 import com.tatotalk.model.Employees;
 import com.tatotalk.model.Messages;
@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.hibernate.Length;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

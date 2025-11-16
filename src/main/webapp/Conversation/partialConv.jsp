@@ -7,6 +7,7 @@
       ${fn:toUpperCase(fn:substring(employee.prenom, 0, 1))}${fn:toUpperCase(fn:substring(employee.nom, 0, 1))}
     </div>
     <div>
+      <input type="hidden" id="employeeId" value="${employee.id}">
       <h5 class="mb-0 text-black">${employee.prenom} ${employee.nom}</h5>
     </div>
   </div>

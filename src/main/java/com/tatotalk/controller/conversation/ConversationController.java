@@ -1,7 +1,6 @@
-package com.tatotalk.controller;
+package com.tatotalk.controller.conversation;
 
 import com.tatotalk.model.Employees;
-import com.tatotalk.model.Messages;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.servlet.ServletException;
@@ -10,12 +9,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import javassist.compiler.Parser;
 
 import java.io.IOException;
-import java.nio.channels.SelectableChannel;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @WebServlet("/conv")
 public class ConversationController extends HttpServlet {

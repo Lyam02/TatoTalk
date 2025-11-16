@@ -4,15 +4,17 @@
 
 <c:forEach var="mess" items="${messages}">
     <c:if test="${mess.sendTo.id eq sessionUserId}">
-        <div class="d-flex justify-content-start mb-3">
+        <div class="d-flex justify-content-start mb-3 message" data-messageId="${mess.id}">
             <div class="mw-75">
                 <div class="bg-white p-3 rounded-3 shadow-sm">
+                    <input type="hidden" id="messageId" value="${mess.id}">
                         ${mess.message_content}
                 </div>
                 <small class="text-muted ms-2">${fn:substring(mess.edited_at, 11, 16)}</small>
             </div>
         </div>
     </c:if>
+
     <c:if test="${mess.sendTo.id eq employeeSendTo.id}">
         <div class="d-flex justify-content-end mb-3">
             <div class="d-flex flex-column align-items-end" style="max-width: 75%;">

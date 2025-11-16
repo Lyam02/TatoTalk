@@ -35,10 +35,30 @@
 
         </div>
     </div>
-
-
 </div>
 
 
+<script>
+
+    setInterval(function refresh (){
+        var messageid = $('#messageId').val();
+
+        var employeeid = $('#employeeId').val();
+
+        $.get('verif', {
+            messageId: messageid,
+            employeeId: employeeid
+        },function (response){
+            if (response.isTheNewest===false){
+                $.get("mess",{
+                    employeeId: employeeid
+                },function (resp){
+                    $("#messages").html(resp);
+                })
+            }
+        },'json')
+    }, 3000)
+
+</script>
 
 <%@ include file="Shared/footer.jsp"%>
