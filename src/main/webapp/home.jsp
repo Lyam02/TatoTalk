@@ -41,9 +41,12 @@
 <script>
 
     setInterval(function refresh (){
-        var messageid = $('#messageId').val();
 
-        var employeeid = $('#employeeId').val();
+        var lastMessageDiv = $('.message[data-messageid]').last();
+        var messageid = lastMessageDiv.data('messageid');
+
+        var employee = $('.employee[data-employeeid]').last();
+        var employeeid = employee.data('employeeid');
 
         $.get('verif', {
             messageId: messageid,

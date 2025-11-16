@@ -25,7 +25,16 @@ public class VerifMessController extends HttpServlet {
 
         int sessionUserId = (Integer) session.getAttribute("sessionUserId");
 
-        int messageId = Integer.parseInt(req.getParameter("messageId"));
+        int messageId = 0;
+
+        try {
+            messageId = Integer.parseInt(req.getParameter("messageId"));
+        }catch (NumberFormatException ex){
+            resp.setContentType("application/json");
+            resp.getWriter().write("{\"isTheNewest\": false}");
+            return;
+        }
+
 
          Messages messageToVerif = em.createQuery("select m from Messages m where m.id = :messageId", Messages.class)
                  .setParameter("messageId", messageId)
@@ -34,6 +43,8 @@ public class VerifMessController extends HttpServlet {
          Messages lastMessage = em.createQuery("select m from Messages m where m.sendBy.id = :employeId and m.sendTo.id = :sessionUserId " +
                          "order by m.edited_at DESC limit 1", Messages.class)
                  .setParameter("sessionUserId", sessionUserId).setParameter("employeId", employeId).getSingleResult();
+
+
 
 
          if (messageToVerif.edited_at.isBefore(lastMessage.edited_at)){

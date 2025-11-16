@@ -6,8 +6,7 @@
     <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 45px; height: 45px;">
       ${fn:toUpperCase(fn:substring(employee.prenom, 0, 1))}${fn:toUpperCase(fn:substring(employee.nom, 0, 1))}
     </div>
-    <div>
-      <input type="hidden" id="employeeId" value="${employee.id}">
+    <div class="employee" data-employeeid="${employee.id}">
       <h5 class="mb-0 text-black">${employee.prenom} ${employee.nom}</h5>
     </div>
   </div>
