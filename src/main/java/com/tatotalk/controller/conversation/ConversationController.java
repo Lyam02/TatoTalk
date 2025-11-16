@@ -42,43 +42,4 @@ public class ConversationController extends HttpServlet {
 
         request.getRequestDispatcher("Conversation/partialConv.jsp").forward(request, response);
     }
-
-    /*@Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
-        EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
-        EntityManager em = emf.createEntityManager();
-
-        HttpSession session = request.getSession();
-        int employeeId = (Integer) session.getAttribute("currentConvEmployeeId");
-
-        String messageText = request.getParameter("message");
-
-        Employees employee = em.createQuery("select e from Employees e where e.Id = :employeeId", Employees.class)
-                .setParameter("employeeId", employeeId)
-                .getSingleResult();
-
-        Messages message = new Messages();
-        message.setMessage_content(messageText);
-        message.setCreated_at(LocalDateTime.now());
-        message.setEdited_at(LocalDateTime.now());
-        message.setSendTo(employee);
-
-        em.getTransaction().begin();
-
-        em.persist(message);
-
-        em.getTransaction().commit();
-
-        List<Messages> messages = em.createQuery("select m from Messages m where m.sendTo.id = :userId", Messages.class)
-                .setParameter("userId", employeeId)
-                .getResultList();
-
-        request.setAttribute("messages", messages);
-
-        em.close();
-
-        request.getRequestDispatcher("Conversation/partialMessage.jsp").forward(request, response);
-    }*/
-
 }
