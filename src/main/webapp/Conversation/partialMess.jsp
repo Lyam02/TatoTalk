@@ -18,7 +18,7 @@
     <c:if test="${mess.sendTo.id eq employeeSendTo.id}">
         <div class="d-flex justify-content-end mb-3">
             <div class="d-flex flex-column align-items-end" style="max-width: 75%;">
-                <div class="bg-primary text-white p-3 rounded-3">
+                <div class=" text-white p-3 rounded-3" style="background: #3DB6AE">
                         ${mess.message_content}
                 </div>
                 <small class="text-muted me-2">${fn:substring(mess.edited_at, 11, 16)}</small>
