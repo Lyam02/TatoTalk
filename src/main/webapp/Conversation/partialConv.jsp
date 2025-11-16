@@ -21,7 +21,16 @@
     <div class="input-group">
       <input type="text" class="form-control bg-white me-1" name="message" placeholder="Tapez votre message...">
       <input type="hidden" value="${employee.id}" name="employeeId">
-      <button class="btn px-2" type="submit" style="background-color: #5aa1c3"><i class="bi bi-send"></i></button>
+      <button id="send" class="btn px-2" type="submit" onclick="clear()" style="background-color: #5aa1c3"><i class="bi bi-send"></i></button>
     </div>
   </form>
 </div>
+
+
+<script>
+
+  function clear(){
+    document.getElementById('#send').value = "";
+  }
+
+</script>
