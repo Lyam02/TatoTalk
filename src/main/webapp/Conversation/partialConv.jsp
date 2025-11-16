@@ -19,9 +19,9 @@
 <div class="p-3 border-top">
   <form action="mess" target="#messages">
     <div class="input-group">
-      <input type="text" class="form-control bg-white me-1" name="message" placeholder="Tapez votre message...">
+      <input id="send" type="text" class="form-control bg-white me-1" name="message" required placeholder="Tapez votre message...">
       <input type="hidden" value="${employee.id}" name="employeeId">
-      <button class="btn px-2" type="submit" style="background-color: #5aa1c3"><i class="bi bi-send"></i></button>
+      <button class="btn px-2" type="submit" onclick="clearInput()" style="background-color: #5aa1c3"><i class="bi bi-send"></i></button>
     </div>
   </form>
 </div>

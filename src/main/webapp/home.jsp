@@ -64,4 +64,12 @@
 
 </script>
 
+<script>
+    function clearInput(){
+        if ($('#send').val() !== ""){
+            setInterval(function(){$('#send').val('');},100)
+        }
+    }
+</script>
+
 <%@ include file="Shared/footer.jsp"%>
