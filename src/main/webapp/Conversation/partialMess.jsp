@@ -24,3 +24,14 @@
         </div>
     </c:if>
 </c:forEach>
+
+<script>
+    (function() {
+        var messagesDiv = document.getElementById('messages');
+        if (messagesDiv) {
+            setTimeout(function() {
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 0);
+        }
+    })();
+</script>
