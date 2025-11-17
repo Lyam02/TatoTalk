@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
+import org.mindrot.jbcrypt.BCrypt;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -105,25 +105,42 @@ public class NewMdp extends HttpServlet {
             Employees employe = tokenEntity.getId_Employee();
 
             // -----------------------------------------------------------------
-            // NOUVEAU : VÉRIFICATION DE L'HISTORIQUE (SANS HASHAGE)
+            // NOUVEAU : VÉRIFICATION DE L'HISTORIQUE (AVEC HASHAGE)
             // -----------------------------------------------------------------
 
-            // 1. Récupérer les 4 derniers mots de passe de l'historique
+            // 1. Récupérer les 5 derniers mots de passe de l'historique (inchangé)
             TypedQuery<String> historyQuery = em.createQuery(
                     "SELECT h.old_password FROM HistoriqueMdp h " +
                             "WHERE h.Id_Employee = :employee " +
                             "ORDER BY h.date_historique DESC", String.class);
             historyQuery.setParameter("employee", employe);
             historyQuery.setMaxResults(5); // 5 derniers de l'historique
-            List<String> lastPasswords = historyQuery.getResultList();
+            List<String> lastHashedPasswords = historyQuery.getResultList();
 
-            // 2. Ajouter le mot de passe ACTUEL (c'est le 6ème)
+            // 2. Ajouter le mot de passe ACTUEL
             if (employe.getPassword() != null && !employe.getPassword().isEmpty()) {
-                lastPasswords.add(employe.getPassword());
+                lastHashedPasswords.add(employe.getPassword());
             }
 
-            // 3. Vérifier si le NOUVEAU mdp (mdp1) est dans la liste
-            if (lastPasswords.contains(mdp1)) {
+            // 3. VÉRIFIER si le NOUVEAU mdp (mdp1) correspond à l'un des anciens
+            boolean isPasswordReused = false;
+
+            // On boucle sur chaque hash de l'historique
+            for (String oldHashedPassword : lastHashedPasswords) {
+                try {
+                    // On compare le NOUVEAU mdp en CLAIR (mdp1)avec l'ANCIEN mdp HASHÉ (oldHashedPassword)
+                    if (BCrypt.checkpw(mdp1, oldHashedPassword)) {
+                        isPasswordReused = true;
+                        break;
+                    }
+                } catch (IllegalArgumentException e) {
+                    // Ignorer si un hash est malformé ou n'est pas un hash Bcrypt valide
+                    System.err.println("Avertissement : Ancien mot de passe malformé détecté pour l'employé " + employe.getId());
+                }
+            }
+
+            // 4. Si le mot de passe est réutilisé, on bloque
+            if (isPasswordReused) {
                 // Le mot de passe a déjà été utilisé
                 em.getTransaction().rollback(); // Annuler la transaction
 
@@ -151,7 +168,12 @@ public class NewMdp extends HttpServlet {
             }
 
             // 4c. Mettre à jour son mot de passe
-            employe.setPassword(mdp1); // Version non sécurisée
+            // 1. Hachez le mot de passe avec un "sel" (salt) généré
+            // Le "12" est le "facteur de coût" (log rounds). 10 à 12 est une bonne valeur.
+            String mdp_hache = BCrypt.hashpw(mdp1, BCrypt.gensalt(12));
+
+            // 2. Stockez ce HASH dans votre objet (et ensuite en BDD)
+            employe.setPassword(mdp_hache);
 
             em.merge(employe); // Appliquer l'UPDATE sur l'employé
 
