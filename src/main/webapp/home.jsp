@@ -67,7 +67,7 @@
 <script>
     function clearInput(){
         if ($('#send').val() !== ""){
-            setInterval(function(){$('#send').val('');},100)
+            setTimeout(function(){$('#send').val('');},100)
         }
     }
 </script>
