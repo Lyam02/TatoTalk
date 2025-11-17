@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession; // Import pour la session
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 
@@ -62,13 +63,13 @@ public class Connexion extends HttpServlet {
             // !! ATTENTION SÉCURITÉ !!
             // Ceci n'est valide que si vous stockez les mots de passe en CLAIR (NON RECOMMANDÉ)
             // En production, utilisez un hash (ex: BCrypt)
-            // if (BCrypt.checkpw(motDePasseSaisi, utilisateur.getMotDePasse())) {
-            //     motDePasseValide = true;
-            // }
+             if (BCrypt.checkpw(motDePasseSaisi, utilisateur.getPassword())) {
+                 motDePasseValide = true;
+             }
 
-            if (utilisateur.getPassword().equals(motDePasseSaisi)) {
-                motDePasseValide = true;
-            }
+//            if (utilisateur.getPassword().equals(motDePasseSaisi)) {
+//                motDePasseValide = true;
+//            }
 
         } catch (NoResultException e) {
             // L'email n'a pas été trouvé. L'utilisateur ou le MDP est incorrect.
