@@ -5,28 +5,39 @@
 
     <a href="logout">Logout</a>
 
-    <div class="row h-100 g-0">
+    <div class="d-flex justify-content-center my-3">
+        <div class="input-group" style="width: 900px;">
+            <span class="input-group-text border-end-0" style="font-size: 1.1rem; background-color: #FAF8F3;">
+                <i class="bi bi-search"></i>
+            </span>
+            <input id="search" type="search" class="form-control border-start-0" placeholder="Recherche" aria-label="Search" aria-describedby="search-addon" style="font-size: 1.1rem; padding: 0.6rem; background-color: #FAF8F3;" />
+        </div>
+    </div>
+
+    <div class="row h-100 g-0 mt-2">
         <div class="col-6">
             <div class="overflow-auto flex-grow-1">
                 <c:forEach var="employe" items="${employees}">
-                    <div class="d-flex align-items-center p-3">
-                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 50px; height: 50px; min-width: 50px;">
-                                ${fn:toUpperCase(fn:substring(employe.prenom, 0, 1))}${fn:toUpperCase(fn:substring(employe.nom, 0, 1))}
-                        </div>
-                        <div class="flex-grow-1 overflow-hidden">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div class="flex-grow-1">
-                                    <h6><a href="conv?employeeId=${employe.id}" target="#partialConv" class="mb-0 text-black text-decoration-none">${employe.prenom} ${employe.nom}</a></h6>
+                    <c:if test="${employe.id ne sessionUserId}">
+                        <div class="user d-flex align-items-center p-3" data-username="${employe.prenom} ${employe.nom}">
+                            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 50px; height: 50px; min-width: 50px;">
+                                    ${fn:toUpperCase(fn:substring(employe.prenom, 0, 1))}${fn:toUpperCase(fn:substring(employe.nom, 0, 1))}
+                            </div>
+                            <div class="flex-grow-1 overflow-hidden">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h6><a href="conv?employeeId=${employe.id}" target="#partialConv" class="mb-0 text-black text-decoration-none">${employe.prenom} ${employe.nom}</a></h6>
+                                    </div>
+                                    <div class="ms-2 flex-shrink-0">
+                                        <small class="text-muted">12:34</small>
+                                    </div>
                                 </div>
-                                <div class="ms-2 flex-shrink-0">
-                                    <small class="text-muted">12:34</small>
+                                <div>
+                                    <small class="text-muted text-truncate d-block" style="max-width: 150px;"></small>
                                 </div>
                             </div>
-                            <div>
-                                <small class="text-muted text-truncate d-block" style="max-width: 150px;">hhhhhhhhhhhhhhhhhhhhhhhhhhhh</small>
-                            </div>
                         </div>
-                    </div>
+                    </c:if>
                 </c:forEach>
             </div>
         </div>
@@ -37,9 +48,37 @@
     </div>
 </div>
 
+<style>
+    .hidden {
+        display: none !important;
+    }
+</style>
+
 
 <script>
+    $(document).ready(function(){
+        $('#search').on('keyup', function (){
 
+            var searchtext = $(this).val().toLowerCase();
+
+            if (searchtext === '') {
+                $('.user').removeClass('hidden');
+            } else {
+                $('.user').each(function (){
+                    var username = $(this).data('username').toLowerCase();
+
+                    if (username.includes(searchtext)){
+                        $(this).removeClass('hidden');
+                    } else {
+                        $(this).addClass('hidden');
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+<script>
     setInterval(function refresh (){
 
         var lastMessageDiv = $('.message[data-messageid]').last();

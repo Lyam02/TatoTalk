@@ -4,9 +4,9 @@
 
 <c:forEach var="mess" items="${messages}">
     <c:if test="${mess.sendTo.id eq sessionUserId}">
-        <div class="d-flex justify-content-start mb-3 message" data-messageid="${mess.id}">
-            <div class="mw-75">
-                <div class="bg-white p-3 rounded-3 shadow-sm">
+        <div class="d-flex justify-content-start mb-3" data-messageid="${mess.id}">
+            <div style="max-width: 75%;">
+                <div class="bg-white p-3 rounded-3 shadow-sm" style="word-wrap: break-word; overflow-wrap: break-word;">
                     <input type="hidden" id="messageId" value="${mess.id}">
                         ${mess.message_content}
                 </div>
@@ -17,8 +17,8 @@
 
     <c:if test="${mess.sendTo.id eq employeeSendTo.id}">
         <div class="d-flex justify-content-end mb-3">
-            <div class="d-flex flex-column align-items-end" style="max-width: 75%;">
-                <div class=" text-white p-3 rounded-3" style="background: #3DB6AE">
+            <div style="max-width: 75%;">
+                <div class="text-white p-3 rounded-3" style="background: #3DB6AE; word-wrap: break-word; overflow-wrap: break-word;">
                         ${mess.message_content}
                 </div>
                 <small class="text-muted me-2">${fn:substring(mess.edited_at, 11, 16)}</small>

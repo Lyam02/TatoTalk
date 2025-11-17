@@ -30,11 +30,10 @@ public class HomeController extends HttpServlet {
             return;
         }
 
-
         EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         EntityManager em = emf.createEntityManager();
 
-        List<Employees> employees = em.createQuery("SELECT e from Employees e", Employees.class).getResultList();
+        List<Employees> employees = em.createQuery("select e from Employees e", Employees.class).getResultList();
 
         request.setAttribute("employees", employees);
 
