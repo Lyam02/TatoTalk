@@ -53,9 +53,9 @@
 <div class="d-flex m-0 p-0" style="height: 100vh;">
     <div class="navbar d-flex m-0 p-0">
         <nav class="sidebar d-flex flex-column p-4">
-            <div class="sidebar-brand mt-4 mb-5">
+            <div class="sidebar-brand mt-4 mb-5 d-flex align-items-center gap-2">
                 <img src="${pageContext.request.contextPath}/Shared/images/logo.png" alt="Yato-Talk Logo" style="width: 50px; height: auto;">
-                TatoTalk
+                <span class="mt-3">TatoTalk</span>
             </div>
 
             <ul class="nav nav-pills flex-column gap-2">
