@@ -2,8 +2,10 @@
 <%@ include file="Shared/header.jsp" %>
 
 <div class="container-fluid d-flex flex-column p-0" style="height: 89vh;">
-
     <a href="logout">Logout</a>
+<c:if test="${sessionUserRole eq 'Admin'}">
+    <a href="admin/addUser">Add User</a>
+</c:if>
 
     <div class="d-flex justify-content-center my-3">
         <div class="input-group" style="width: 900px;">

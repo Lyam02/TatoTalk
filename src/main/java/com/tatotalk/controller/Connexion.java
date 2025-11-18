@@ -92,7 +92,7 @@ public class Connexion extends HttpServlet {
 
             // 5b. Stocker les infos de l'utilisateur en session
             session.setAttribute("sessionUserId", utilisateur.getId());
-            //session.setAttribute("userEmail", utilisateur.getEmail());
+            session.setAttribute("sessionUserRole", utilisateur.getRoles().getName());
             // Vous pouvez stocker d'autres infos (ex: nom)
 
             // 5c. Rediriger vers la page d'accueil (pattern Post-Redirect-Get)
