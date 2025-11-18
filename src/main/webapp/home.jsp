@@ -1,24 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="Shared/header.jsp" %>
 
-<div class="container-fluid d-flex flex-column p-0" style="height: 89vh;">
-    <a href="logout">Logout</a>
-<c:if test="${sessionUserRole eq 'Admin'}">
-    <a href="admin/addUser">Add User</a>
-</c:if>
-
+<div class="container-fluid d-flex flex-column p-0" style="height: 100vh;">
     <div class="d-flex justify-content-center my-3">
         <div class="input-group" style="width: 900px;">
-            <span class="input-group-text border-end-0" style="font-size: 1.1rem; background-color: #f0f1f0;">
-                <i class="bi bi-search"></i>
-            </span>
+                <span class="input-group-text border-end-0" style="font-size: 1.1rem; background-color: #f0f1f0;">
+                    <i class="bi bi-search"></i>
+                </span>
             <input id="search" type="search" class="form-control border-start-0" placeholder="Recherche" aria-label="Search" aria-describedby="search-addon" style="font-size: 1.1rem; padding: 0.6rem; background-color: #f0f1f0;" />
         </div>
     </div>
 
     <div class="row h-100 g-0 mt-2">
         <div class="col-6">
-            <div class="overflow-auto flex-grow-1" style="max-height: calc(100vh - 150px);">
+            <div class="overflow-auto flex-grow-1" style="max-height: calc(100vh - 135px);">
                 <c:forEach var="employe" items="${employees}">
                     <c:if test="${employe.id ne sessionUserId}">
                         <div class="user d-flex align-items-center p-3" data-username="${employe.prenom} ${employe.nom}">
@@ -44,10 +39,11 @@
             </div>
         </div>
 
-        <div class="col-6 d-flex overflow-auto flex-column border-start" id="partialConv" style="height: 89vh;">
+        <div class="col-6 d-flex overflow-auto flex-column border-start" id="partialConv" style="height: calc(100vh - 90px);">
 
         </div>
     </div>
+</div>
 </div>
 
 <style>
