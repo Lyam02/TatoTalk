@@ -60,19 +60,19 @@
 
             <ul class="nav nav-pills flex-column gap-2">
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fs-5 bi-chat-fill me-2" style="color: #53758d"></i>Messages</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/home"><i class="fs-5 bi-chat-fill me-2" style="color: #53758d"></i>Messages</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><i class="fs-5 bi-people-fill me-2" style="color: #53758d"></i>Groupes</a>
                 </li>
-                <div class="dropup pb-4" style="margin-top: 680px">
+                <div class="dropup pb-4" style="margin-top: 63vh;">
                     <a class="text-decoration-none" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fs-2 bi-gear-wide-connected" style="color: #53758d; margin-left: 70px"></i>
                     </a>
 
                     <ul class="dropdown-menu mb-2" style="margin-left: 9px">
                         <li style="margin-left: 7px">
-                            <a class="dropdown-item d-flex align-items-center gap-2" href="admin/addUser">
+                            <a class="dropdown-item d-flex align-items-center gap-2" href="${pageContext.request.contextPath}/admin/addUser">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
                                     <path fill="#0b3d62" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
                                     <path fill="#d63939" fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
@@ -82,7 +82,7 @@
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center gap-2" href="#"><i class="fs-4 bi-box-arrow-left"></i><span style="margin-left: 5px">Logout</span></a>
+                            <a class="dropdown-item d-flex align-items-center gap-2" href="logout"><i class="fs-4 bi-box-arrow-left"></i><span style="margin-left: 5px">Logout</span></a>
                         </li>
                     </ul>
                 </div>

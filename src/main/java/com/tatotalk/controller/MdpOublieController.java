@@ -28,14 +28,11 @@ public class MdpOublieController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 1. Spécifiez le chemin vers la "vue" (le fichier JSP mdpOublie)
+        // Chemin vers la vue
         String jspPagePath = "/connexion/mdpOublie.jsp";
 
-        // 2. Obtenez le "dispatcher" pour cette page
         RequestDispatcher dispatcher = request.getRequestDispatcher(jspPagePath);
 
-        // 3. Transférez la requête (request) et la réponse (response) au JSP
-        // Le serveur fait le transfert en interne, l'URL ne change pas
         dispatcher.forward(request, response);
     }
 
@@ -49,18 +46,17 @@ public class MdpOublieController extends HttpServlet {
         // Récupérer les paramètres du formulaire
         String email = request.getParameter("email");
 
-        // --- ÉTAPE 2 : Vérifier si l'e-mail existe (code select sql BDD) ---
+        // --- ÉTAPE 2 : Vérifier si l'e-mail existe ---
          boolean userExiste = emailLogic.emailExist(email);
 
         // --- ÉTAPE 3 : Si oui, générer le token et envoyer l'e-mail ---
         if (userExiste) {
             try {
 
-                // ... (votre logique pour générer le token) ...
+                // (logique pour générer le token)
                 String token = UUID.randomUUID().toString();
 
-
-                // --- DÉBUT : Logique pour sauvegarder le token en BDD ---
+                // --- Sauvegarder le token en BDD ---
                 EntityManager em = null;
                 try {
                     // 1. Obtenir un EntityManager et démarrer une transaction
@@ -77,22 +73,22 @@ public class MdpOublieController extends HttpServlet {
                     // 3. --- NOUVELLE LOGIQUE : CHERCHER UN TOKEN EXISTANT ---
                     PasswordToken tokenExistant = null;
                     try {
-                        // On cherche un token lié à cet employé
+                        // cherche un token lié à l'employé
                         TypedQuery<PasswordToken> tokenQuery = em.createQuery(
                                 "SELECT t FROM PasswordToken t WHERE t.Id_Employee = :employee", PasswordToken.class);
                         tokenQuery.setParameter("employee", employeConcerne);
 
-                        tokenExistant = tokenQuery.getSingleResult(); // Ceci lèvera une exception si non trouvé
+                        tokenExistant = tokenQuery.getSingleResult(); // lève une exception si non trouvé
 
                     } catch (jakarta.persistence.NoResultException e) {
-                        // C'est normal, l'utilisateur n'avait pas de token.
+                        // l'utilisateur n'avait pas de token.
                         tokenExistant = null;
                     }
 
 
                     // 4. --- DÉCISION : METTRE À JOUR OU CRÉER ? ---
                     if (tokenExistant != null) {
-                        // UN TOKEN EXISTE DÉJÀ : On le met à jour (merge)
+                        // UN TOKEN EXISTE DÉJÀ : On le met à jour
                         System.out.println("Mise à jour du token pour l'employé ID: " + employeConcerne.getId());
                         tokenExistant.setToken(token);
                         tokenExistant.setDate_reset_expiration(LocalDateTime.now().plusMinutes(30)); // (Version recommandée)
@@ -100,7 +96,7 @@ public class MdpOublieController extends HttpServlet {
                         em.merge(tokenExistant); // merge = UPDATE
 
                     } else {
-                        // AUCUN TOKEN N'EXISTE : On en crée un (persist)
+                        // AUCUN TOKEN N'EXISTE : On en crée un
                         System.out.println("Création d'un nouveau token pour l'employé ID: " + employeConcerne.getId());
                         PasswordToken nouveauToken = new PasswordToken();
                         nouveauToken.setToken(token);
@@ -123,19 +119,14 @@ public class MdpOublieController extends HttpServlet {
                         em.close();
                     }
                 }
-                // --- FIN : Logique pour sauvegarder le token en BDD ---
 
-
-
-
-                // ... (votre logique pour construire le lien) ...
+                // construction du lien reset
                 String resetLink = request.getScheme() + "://" +    // (1)
                         request.getServerName() + ":" +             // (2)
                         request.getServerPort() +                   // (3)
                         request.getContextPath() +                  // (4)
                         "/newMdp?token=" + token;              // (5)
 
-                // ... (votre logique pour envoyer l'e-mail)
                 // fonction envoie eMail
                 try {
                     String sujet = "TatoTalk - Réinitialisez votre mot de passe";
@@ -144,13 +135,12 @@ public class MdpOublieController extends HttpServlet {
                             resetLink + "\n\n" +
                             "Ce lien expirera dans 30 minutes.";
 
-                    // Appel direct à votre nouvelle classe !
+                    // Appel à la fonction sendMail
                     EmailService.sendEmail(email, sujet, corps);
 
                 } catch (Exception e) {
+                    // (Même si l'e-mail échoue, on continue vers la page de succès pour ne pas révéler d'infos à l'utilisateur)
                     System.err.println("Erreur fatale lors de l'envoi de l'e-mail : " + e.getMessage());
-                    // (Même si l'e-mail échoue, on continue vers la page de succès
-                    // pour ne pas révéler d'infos à l'utilisateur)
                 }
 
                 System.out.println("Lien de réinitialisation : " + resetLink);
@@ -160,10 +150,8 @@ public class MdpOublieController extends HttpServlet {
             }
 
             // --- ÉTAPE 4 : Rediriger vers la page de succès ---
-            // On utilise "sendRedirect" ici, car c'est une action terminée.
-            // L'URL dans le navigateur du client va changer.
-          //  response.sendRedirect(request.getContextPath() + "/connexion/connexion.jsp");
-            // 1. Définir le message d'erreur
+
+            // 1. Définir le message d'affiché
             request.setAttribute("successMessage", "Si cette adresse e-mail est dans nos dossiers, un lien de réinitialisation a été envoyé.");
 
             // 2. Transférer (forward) vers la page (identique)
@@ -173,7 +161,7 @@ public class MdpOublieController extends HttpServlet {
         }else {
             // --- L'UTILISATEUR N'EXISTE PAS ---
 
-            // 1. Définir le message d'erreur
+            // 1. Définir le message d'affiché (le même que le précédent sauf que aucun mail sera envoyé)
             request.setAttribute("successMessage", "Si cette adresse e-mail est dans nos dossiers, un lien de réinitialisation a été envoyé.");
 
             // 2. Transférer (forward) vers la page (identique)
@@ -210,10 +198,9 @@ class Email{
 
 class EmailService {
 
-    // 1. L'adresse e-mail de votre compte Gmail que vous utilisez pour envoyer
+    // 1. L'adresse e-mail du compte Gmail utilisé
     private static final String GMAIL_USERNAME = "yatogroupfr@gmail.com";
     // 2. Le "Mot de passe d'application" de 16 lettres généré par Google
-    //    NE METTEZ PAS VOTRE VRAI MOT DE PASSE GMAIL ICI !
     private static final String GMAIL_APP_PASSWORD = "tmpf kjur zbts lkkn";
 
     /**
@@ -259,7 +246,6 @@ class EmailService {
             // Gérer les erreurs d'envoi
             System.err.println("EmailService: Erreur lors de l'envoi de l'e-mail.");
             e.printStackTrace();
-            // Il est important de "lancer" l'erreur pour que le contrôleur sache que ça a échoué
             throw new RuntimeException("Erreur lors de l'envoi de l'e-mail", e);
         }
     }
