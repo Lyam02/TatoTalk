@@ -82,7 +82,7 @@
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
-                            <a class="dropdown-item d-flex align-items-center gap-2" href="logout"><i class="fs-4 bi-box-arrow-left"></i><span style="margin-left: 5px">Logout</span></a>
+                            <a class="dropdown-item d-flex align-items-center gap-2" href="${pageContext.request.contextPath}/logout"><i class="fs-4 bi-box-arrow-left"></i><span style="margin-left: 5px">Logout</span></a>
                         </li>
                     </ul>
                 </div>
