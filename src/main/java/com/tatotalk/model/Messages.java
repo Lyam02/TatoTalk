@@ -39,7 +39,11 @@ public class Messages {
     @JoinColumn(name = "sendTo")
     public Employees sendTo;
 
-    public Messages(int id, String message_content, String type, LocalDateTime edited_at, LocalDateTime created_at, Conversations conversations, Employees sendBy, Employees sendTo) {
+    @ManyToOne
+    @JoinColumn(name = "groupe_id")
+    public Groupe groupe;
+
+    public Messages(int id, String message_content, String type, LocalDateTime edited_at, LocalDateTime created_at, Conversations conversations, Employees sendBy, Employees sendTo, Groupe groupe) {
         this.id = id;
         this.message_content = message_content;
         this.type = type;
@@ -48,6 +52,7 @@ public class Messages {
         this.conversations = conversations;
         this.sendBy = sendBy;
         this.sendTo = sendTo;
+        this.groupe = groupe;
     }
 
     public Messages() {
@@ -112,5 +117,13 @@ public class Messages {
 
     public void setConversations(Conversations conversations) {
         this.conversations = conversations;
+    }
+
+    public Groupe getGroupe() {
+        return groupe;
+    }
+
+    public void setGroupe(Groupe groupe) {
+        this.groupe = groupe;
     }
 }

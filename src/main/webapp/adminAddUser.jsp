@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <%-- JSTL est nécessaire pour la boucle --%>
+<%@ include file="Shared/header.jsp" %>
 
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; }
@@ -73,5 +73,4 @@
     <button type="submit">Ajouter l'employé</button>
 </form>
 
-</body>
-</html>
+<%@ include file="Shared/footer.jsp"%>

@@ -18,7 +18,7 @@
 
     <div class="row h-100 g-0 mt-2">
         <div class="col-6">
-            <div class="overflow-auto flex-grow-1">
+            <div class="overflow-auto flex-grow-1" style="max-height: calc(100vh - 150px);">
                 <c:forEach var="employe" items="${employees}">
                     <c:if test="${employe.id ne sessionUserId}">
                         <div class="user d-flex align-items-center p-3" data-username="${employe.prenom} ${employe.nom}">
@@ -55,7 +55,6 @@
         display: none !important;
     }
 </style>
-
 
 <script>
     $(document).ready(function(){

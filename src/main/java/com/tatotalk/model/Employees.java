@@ -3,6 +3,9 @@ package com.tatotalk.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "employes")
 public class Employees {
@@ -45,6 +48,9 @@ public class Employees {
     @JoinColumn(name = "role_id")
     public Roles roles;
 
+    @ManyToMany(mappedBy = "employees")
+    public List<Groupe> groupes = new ArrayList<>();
+
     public Employees(String nom, String prenom, String email, String samaccountname, String displayname, String department, Roles roles, String service, String password) {
         this.nom = nom;
         this.prenom = prenom;
@@ -55,10 +61,23 @@ public class Employees {
         this.roles = roles;
         this.service = service;
         this.password = password;
+        this.groupes = new ArrayList<>();
     }
 
     public Employees() {
 
+    }
+
+    public void addGroupe(Groupe groupe) {
+        if (!this.groupes.contains(groupe)) {
+            this.groupes.add(groupe);
+            groupe.getEmployees().add(this);
+        }
+    }
+
+    public void removeGroupe(Groupe groupe) {
+        this.groupes.remove(groupe);
+        groupe.getEmployees().remove(this);
     }
 
     public int getId() {
@@ -135,5 +154,13 @@ public class Employees {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Groupe> getGroupes() {
+        return groupes;
+    }
+
+    public void setGroupes(List<Groupe> groupes) {
+        this.groupes = groupes;
     }
 }
