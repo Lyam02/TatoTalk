@@ -58,7 +58,7 @@
 
 <script>
     $(document).ready(function(){
-        $('#search').on('keyup', function (){
+        $('#search').on('input', function (){
 
             var searchtext = $(this).val().toLowerCase();
 
