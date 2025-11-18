@@ -2,8 +2,10 @@
 <%@ include file="Shared/header.jsp" %>
 
 <div class="container-fluid d-flex flex-column p-0" style="height: 89vh;">
-
     <a href="logout">Logout</a>
+<c:if test="${sessionUserRole eq 'Admin'}">
+    <a href="admin/addUser">Add User</a>
+</c:if>
 
     <div class="d-flex justify-content-center my-3">
         <div class="input-group" style="width: 900px;">
@@ -16,7 +18,7 @@
 
     <div class="row h-100 g-0 mt-2">
         <div class="col-6">
-            <div class="overflow-auto flex-grow-1">
+            <div class="overflow-auto flex-grow-1" style="max-height: calc(100vh - 150px);">
                 <c:forEach var="employe" items="${employees}">
                     <c:if test="${employe.id ne sessionUserId}">
                         <div class="user d-flex align-items-center p-3" data-username="${employe.prenom} ${employe.nom}">
@@ -53,7 +55,6 @@
         display: none !important;
     }
 </style>
-
 
 <script>
     $(document).ready(function(){

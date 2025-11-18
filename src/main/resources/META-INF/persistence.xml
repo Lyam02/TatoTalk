@@ -11,6 +11,7 @@
     <class>com.tatotalk.model.Conversations</class>
     <class>com.tatotalk.model.Messages</class>
     <class>com.tatotalk.model.Roles</class>
+    <class>com.tatotalk.model.Groupe</class>
 
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
@@ -21,7 +22,7 @@
       <property name="jakarta.persistence.jdbc.user"
                 value="root"/>
       <property name="jakarta.persistence.jdbc.password"
-                value="040505"/>
+                value=""/>
       <property name="jakarta.persistence.jdbc.driver"
                 value="com.mysql.cj.jdbc.Driver"/>
 
