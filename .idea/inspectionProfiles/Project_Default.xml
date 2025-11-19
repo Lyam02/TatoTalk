@@ -11,16 +11,22 @@
       <option name="ignoredModules">
         <list>
           <option value="TatoTalk" />
+          <option value="TatoTalk" />
+          <option value="TatoTalk" />
         </list>
       </option>
       <option name="ignoredPackages">
         <list>
           <option value="com.google.protobuf:protobuf-java:3.21.9" />
+          <option value="io.netty:netty-common:4.1.100.Final" />
+          <option value="io.netty:netty-handler:4.1.100.Final" />
         </list>
       </option>
       <option name="ignoredReasons">
         <list>
           <option value="Not exploitable" />
+          <option value="Not exploitable" />
+          <option value="Fixed in branch" />
         </list>
       </option>
     </inspection_tool>

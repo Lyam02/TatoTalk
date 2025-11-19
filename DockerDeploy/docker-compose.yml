@@ -3,18 +3,28 @@ services:
     image: lyam02/tatotalk:latest
     restart: always
     container_name: TatoTalk_server_1
+    volumes:
+      - ./redisson.yaml:/usr/local/tomcat/conf/redisson.yaml
     ports:
       - 8080:8080
     networks:
       - tatotalknetwork
+    depends_on:
+      - redis
+
   tatotalkserv2:
     image: lyam02/tatotalk:latest
     restart: always
     container_name: TatoTalk_server_2
+    volumes:
+      - ./redisson.yaml:/usr/local/tomcat/conf/redisson.yaml
     ports:
       - 8082:8080
     networks:
       - tatotalknetwork
+    depends_on:
+      - redis
+
   nginxloadbalancer:
     build: ./nginx
     restart: always
@@ -25,6 +35,19 @@ services:
     depends_on:
       - tatotalkserv1
       - tatotalkserv2
+
+  redis:
+    image: redis:alpine
+    container_name: tatotalk-redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    networks:
+      - tatotalk-network
+
+volumes:
+  redis-data:
+
 networks:
   tatotalknetwork:
     external: true
