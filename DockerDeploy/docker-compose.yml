@@ -14,7 +14,6 @@ services:
     networks:
       - tatotalknetwork
   nginxloadbalancer:
-    image: nginx:trixie-perl
     build: ./nginx
     ports:
       - 8081:80
