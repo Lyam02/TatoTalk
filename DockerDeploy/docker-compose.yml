@@ -1,10 +1,4 @@
 services:
-  loadbalancer:
-    image: tomcat:10.1-jdk25
-    ports:
-      - 8081:8080
-    networks:
-      - tatotalknetwork
   tatotalkserv1:
     image: lyam02/tatotalk:latest
     container_name: TatoTalk_server_1
@@ -19,6 +13,16 @@ services:
       - 8083:8080
     networks:
       - tatotalknetwork
+  nginxloadbalancer:
+    image: nginx:trixie-perl
+    build: ./nginx
+    ports:
+      - 8081:80
+    networks:
+      - tatotalknetwork
+    depends_on:
+      - tatotalkserv1
+      - tatotalkserv2
 networks:
   tatotalknetwork:
     external: true
