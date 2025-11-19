@@ -83,6 +83,10 @@
                             </a>
                         </li>
                         <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center gap-2" href="${pageContext.request.contextPath}/server"><i class="fs-4 bi-hdd-stack"></i><span style="margin-left: 5px">Server</span></a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
                         </c:if>
                         <li>
                             <a class="dropdown-item d-flex align-items-center gap-2" href="${pageContext.request.contextPath}/logout"><i class="fs-4 bi-box-arrow-left"></i><span style="margin-left: 5px">Logout</span></a>
