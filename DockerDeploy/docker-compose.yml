@@ -3,7 +3,7 @@ services:
     image: lyam02/tatotalk:latest
     container_name: TatoTalk_server_1
     ports:
-      - 8081:8080
+      - 8080:8080
     networks:
       - tatotalknetwork
   tatotalkserv2:
@@ -16,7 +16,7 @@ services:
   nginxloadbalancer:
     build: ./nginx
     ports:
-      - 80:80
+      - 8081:80
     networks:
       - tatotalknetwork
     depends_on:
