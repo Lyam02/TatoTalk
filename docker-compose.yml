@@ -1,0 +1,15 @@
+services:
+  tatotalkserv1:
+    image: lyam02/tatotalk:latest
+    container_name: TatoTalk_server_1
+    ports:
+      - 8082:8080
+  tatotalkserv2:
+    image: lyam02/tatotalk:latest
+    container_name: TatoTalk_server_2
+    ports:
+      - 8083:8080
+  loadbalancer:
+    image: tomcat:10.1-jdk25
+    ports:
+      - 8084:8080
