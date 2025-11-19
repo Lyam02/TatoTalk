@@ -21,7 +21,7 @@
     <div class="input-group">
       <input id="send" type="text" class="form-control bg-white me-1" name="message" required placeholder="Tapez votre message...">
       <input type="hidden" value="${employee.id}" name="employeeId">
-      <button class="btn px-2" type="submit" onclick="clearInput()" style="background-color: #5aa1c3"><i class="bi bi-send"></i></button>
+      <button class="btn px-2" type="submit" onclick="clearInput()" style="background-color: #0b3d62"><i class="bi bi-send text-white"></i></button>
     </div>
   </form>
 </div>
