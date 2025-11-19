@@ -1,6 +1,7 @@
 services:
   tatotalkserv1:
     image: lyam02/tatotalk:latest
+    restart: always
     container_name: TatoTalk_server_1
     ports:
       - 8080:8080
@@ -8,6 +9,7 @@ services:
       - tatotalknetwork
   tatotalkserv2:
     image: lyam02/tatotalk:latest
+    restart: always
     container_name: TatoTalk_server_2
     ports:
       - 8082:8080
@@ -15,6 +17,7 @@ services:
       - tatotalknetwork
   nginxloadbalancer:
     build: ./nginx
+    restart: always
     ports:
       - 8081:80
     networks:
