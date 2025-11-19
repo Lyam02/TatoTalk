@@ -1,0 +1,28 @@
+services:
+  tatotalkserv1:
+    image: lyam02/tatotalk:latest
+    container_name: TatoTalk_server_1
+    ports:
+      - 8081:8080
+    networks:
+      - tatotalknetwork
+  tatotalkserv2:
+    image: lyam02/tatotalk:latest
+    container_name: TatoTalk_server_2
+    ports:
+      - 8082:8080
+    networks:
+      - tatotalknetwork
+  nginxloadbalancer:
+    build: ./nginx
+    ports:
+      - 80:80
+    networks:
+      - tatotalknetwork
+    depends_on:
+      - tatotalkserv1
+      - tatotalkserv2
+networks:
+  tatotalknetwork:
+    external: true
+    name: tatotalk-network
