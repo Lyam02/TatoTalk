@@ -43,7 +43,7 @@ services:
     volumes:
       - redis-data:/data
     networks:
-      - tatotalk-network
+      - tatotalknetwork
 
 volumes:
   redis-data:
