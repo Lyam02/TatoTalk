@@ -71,6 +71,8 @@
                     </a>
 
                     <ul class="dropdown-menu mb-2" style="margin-left: 9px">
+                        <c:if test="${sessionUserRole eq 'Admin'}">
+
                         <li style="margin-left: 7px">
                             <a class="dropdown-item d-flex align-items-center gap-2" href="${pageContext.request.contextPath}/admin/addUser">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
@@ -81,6 +83,7 @@
                             </a>
                         </li>
                         <li><hr class="dropdown-divider"></li>
+                        </c:if>
                         <li>
                             <a class="dropdown-item d-flex align-items-center gap-2" href="${pageContext.request.contextPath}/logout"><i class="fs-4 bi-box-arrow-left"></i><span style="margin-left: 5px">Logout</span></a>
                         </li>
