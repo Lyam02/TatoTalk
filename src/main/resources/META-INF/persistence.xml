@@ -18,7 +18,7 @@
     <properties>
 
       <property name="jakarta.persistence.jdbc.url"
-                value="jdbc:mysql://MySqlProd:3310/yato"/>
+                value="jdbc:mysql://MySqlProd:3306/yato"/>
       <property name="jakarta.persistence.jdbc.user"
                 value="root"/>
       <property name="jakarta.persistence.jdbc.password"
