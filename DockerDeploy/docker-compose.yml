@@ -15,8 +15,6 @@ services:
     image: lyam02/tatotalk:latest
     restart: always
     container_name: ACC-TatoTalk_server_1
-    volumes:
-      - ./redisson.yaml:/usr/local/tomcat/conf/redisson.yaml
     ports:
       - 8080:8080
     depends_on:
@@ -28,8 +26,6 @@ services:
     image: lyam02/tatotalk:latest
     restart: always
     container_name: ACC-TatoTalk_server_2
-    volumes:
-      - ./redisson.yaml:/usr/local/tomcat/conf/redisson.yaml
     ports:
       - 8082:8080
     depends_on:
