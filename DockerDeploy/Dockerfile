@@ -1,15 +1,15 @@
 # Stage 1 : Build
-FROM maven:3.9-eclipse-temurin-25 AS builder
+FROM maven:3.9-eclipse-temurin-21 AS builder
 
 WORKDIR /app
 
-COPY pom.xml .
-COPY src ./src
+COPY ../pom.xml .
+COPY ../src ./src
 
-RUN mvn clean package -DskipTests
+RUN mvn dependency:purge-local-repository clean package -DskipTests -U
 
 # Stage 2 : Runtime
-FROM tomcat:10.1-jdk25
+FROM tomcat:10.1-jdk21
 
 RUN rm -rf /usr/local/tomcat/webapps/*
 
