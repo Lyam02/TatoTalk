@@ -1,6 +1,7 @@
 singleServerConfig:
   address: "redis://redis:6379"
+  connectionPoolSize: 10
+  connectionMinimumIdleSize: 5
+  database: 0
   timeout: 3000
   connectTimeout: 10000
-  connectionPoolSize: 64
-  connectionMinimumIdleSize: 10

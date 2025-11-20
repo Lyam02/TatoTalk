@@ -1,4 +1,16 @@
 services:
+  redis:
+    image: redis:7-alpine
+    container_name: ACC-redis_server
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - tatotalknetwork
+
   tatotalkserv1:
     image: lyam02/tatotalk:latest
     restart: always
@@ -7,10 +19,10 @@ services:
       - ./redisson.yaml:/usr/local/tomcat/conf/redisson.yaml
     ports:
       - 8080:8080
-    networks:
-      - tatotalknetwork
     depends_on:
       - redis
+    networks:
+      - tatotalknetwork
 
   tatotalkserv2:
     image: lyam02/tatotalk:latest
@@ -20,10 +32,10 @@ services:
       - ./redisson.yaml:/usr/local/tomcat/conf/redisson.yaml
     ports:
       - 8082:8080
-    networks:
-      - tatotalknetwork
     depends_on:
       - redis
+    networks:
+      - tatotalknetwork
 
   nginxloadbalancer:
     build: ./nginx
@@ -36,15 +48,6 @@ services:
     depends_on:
       - tatotalkserv1
       - tatotalkserv2
-
-  redis:
-    image: redis:alpine
-    container_name: ACC-Redis
-    restart: unless-stopped
-    volumes:
-      - redis-data:/data
-    networks:
-      - tatotalknetwork
 
 volumes:
   redis-data:
