@@ -2,7 +2,7 @@ services:
   tatotalkserv1:
     image: lyam02/tatotalk:prod
     restart: always
-    container_name: TatoTalk_server_1
+    container_name: PROD_TatoTalk_server_1
     volumes:
       - ./redisson.yaml:/usr/local/tomcat/conf/redisson.yaml
     ports:
@@ -13,7 +13,7 @@ services:
   tatotalkserv2:
     image: lyam02/tatotalk:prod
     restart: always
-    container_name: TatoTalk_server_2
+    container_name: PROD_TatoTalk_server_2
     volumes:
       - ./redisson.yaml:/usr/local/tomcat/conf/redisson.yaml
     ports:
@@ -24,6 +24,7 @@ services:
   nginxloadbalancer:
     build: ./nginx
     restart: always
+    container_name: PROD_Nginc_LoadBalancer
     ports:
       - 8081:80
     networks:
