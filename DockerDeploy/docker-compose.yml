@@ -35,4 +35,4 @@ services:
 networks:
   tatotalknetwork:
     external: true
-    name: tatotalk-network
+    name: PROD-tatotalk-network
