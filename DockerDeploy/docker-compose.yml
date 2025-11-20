@@ -42,7 +42,7 @@ services:
     restart: always
     container_name: ACC-Nginx_LoadBalancer
     ports:
-      - 8081:80
+      - 8083:80
     depends_on:
       - tatotalkserv1
       - tatotalkserv2
