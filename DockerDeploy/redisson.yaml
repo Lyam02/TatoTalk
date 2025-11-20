@@ -4,4 +4,3 @@ singleServerConfig:
   connectTimeout: 10000
   connectionPoolSize: 64
   connectionMinimumIdleSize: 10
-  codec: !<org.redisson.codec.SerializationCodec> {}
