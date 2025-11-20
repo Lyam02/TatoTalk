@@ -6,7 +6,7 @@ WORKDIR /app
 COPY ../pom.xml .
 COPY ../src ./src
 
-RUN mvn dependency:purge-local-repository clean package -DskipTests -U
+RUN mvn RUN mvn clean package -DskipTests
 
 # Stage 2 : Runtime
 FROM tomcat:10.1-jdk21
