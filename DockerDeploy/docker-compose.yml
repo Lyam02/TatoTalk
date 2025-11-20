@@ -24,7 +24,7 @@ services:
   nginxloadbalancer:
     build: ./nginx
     restart: always
-    container_name: PROD_Nginc_LoadBalancer
+    container_name: PROD_Nginx_LoadBalancer
     ports:
       - 8081:80
     networks:
