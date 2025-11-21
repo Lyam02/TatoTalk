@@ -9,8 +9,6 @@ services:
       - 8080:8080
     networks:
       - tatotalknetwork
-    depends_on:
-      - redis
 
   tatotalkserv2:
     image: lyam02/tatotalk:latest
@@ -22,8 +20,6 @@ services:
       - 8082:8080
     networks:
       - tatotalknetwork
-    depends_on:
-      - redis
 
   nginxloadbalancer:
     build: ./nginx
@@ -35,18 +31,6 @@ services:
     depends_on:
       - tatotalkserv1
       - tatotalkserv2
-
-  redis:
-    image: redis:alpine
-    container_name: tatotalk-redis
-    restart: unless-stopped
-    volumes:
-      - redis-data:/data
-    networks:
-      - tatotalknetwork
-
-volumes:
-  redis-data:
 
 networks:
   tatotalknetwork:
