@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "messages")
@@ -42,6 +41,10 @@ public class Messages {
     @ManyToOne
     @JoinColumn(name = "groupe_id")
     public Groupe groupe;
+
+    @ManyToOne
+    @JoinColumn(name = "fichier_id")
+    public Fichier fichier;
 
     public Messages(int id, String message_content, String type, LocalDateTime edited_at, LocalDateTime created_at, Conversations conversations, Employees sendBy, Employees sendTo, Groupe groupe) {
         this.id = id;
@@ -125,5 +128,13 @@ public class Messages {
 
     public void setGroupe(Groupe groupe) {
         this.groupe = groupe;
+    }
+
+    public Fichier getFichier() {
+        return fichier;
+    }
+
+    public void setFichier(Fichier fichier) {
+        this.fichier = fichier;
     }
 }
