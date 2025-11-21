@@ -13,6 +13,7 @@
     <class>com.tatotalk.model.Roles</class>
     <class>com.tatotalk.model.Groupe</class>
     <class>com.tatotalk.model.UserSession</class>
+    <class>com.tatotalk.model.Fichier</class>
 
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
