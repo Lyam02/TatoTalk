@@ -1,6 +1,6 @@
 services:
   tatotalkserv1:
-    image: lyam02/tatotalk:latest
+    image: lyam02/tatotalk:acc
     restart: always
     container_name: TatoTalk_server_1
     volumes:
@@ -11,7 +11,7 @@ services:
       - tatotalknetwork
 
   tatotalkserv2:
-    image: lyam02/tatotalk:latest
+    image: lyam02/tatotalk:acc
     restart: always
     container_name: TatoTalk_server_2
     volumes:
