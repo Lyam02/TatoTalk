@@ -4,7 +4,7 @@ services:
     restart: always
     container_name: ACC-TatoTalk_server_1
     volumes:
-      - fichiertatotalk:/usr/local/tomcat/webapps/ROOT/WEB-INF/fichierTatoTalk
+      - fichiertatotalk:/fichierTatoTalk
     ports:
       - 8080:8080
     networks:
@@ -15,7 +15,7 @@ services:
     restart: always
     container_name: ACC-TatoTalk_server_2
     volumes:
-      - fichiertatotalk:/usr/local/tomcat/webapps/ROOT/WEB-INF/fichierTatoTalk
+      - fichiertatotalk:/fichierTatoTalk
     ports:
       - 8082:8080
     networks:
@@ -36,6 +36,7 @@ services:
 volumes:
   fichiertatotalk:
     external: true
+    name: fichiertatotalk
 
 networks:
   tatotalknetwork:

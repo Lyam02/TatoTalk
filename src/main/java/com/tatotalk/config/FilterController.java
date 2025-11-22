@@ -36,44 +36,46 @@ public class FilterController implements Filter {
             return;
         }
 
+        String sessionId = getSessionId(req);
+
+        if (sessionId == null){
+            resp.sendRedirect(req.getContextPath() + "/connexion");
+            return;
+        }
+
+
         EntityManagerFactory emf = (EntityManagerFactory) req.getServletContext().getAttribute("emf");
         EntityManager em = emf.createEntityManager();
 
-        String sessionId = getSessionId(req);
-
-        if (sessionId != null){
-
-            var sessionUser = em.createQuery("select u from UserSession u where u.id = :sessionId", UserSession.class)
+        try {
+            UserSession sessionUser = em.createQuery("select u from UserSession u where u.id = :sessionId", UserSession.class)
                     .setParameter("sessionId", sessionId).getSingleResult();
 
-
-            if (sessionUser != null){
-
-                HttpSession session = req.getSession(true);
-                session.setAttribute("sessionUserId", sessionUser.employees.id);
-                session.setAttribute("sessionUserRole", sessionUser.employees.roles.name);
-
-                String newSession = session.getId();
-
-                if (!Objects.equals(newSession, sessionId)){
-
-                    em.getTransaction().begin();
-
-                    em.createQuery("update UserSession u set u.id = :newSession where u.id = :sessionId")
-                            .setParameter("newSession", newSession)
-                            .setParameter("sessionId", sessionId).executeUpdate();
-
-                  em.getTransaction().commit();
-                  em.close();
-
-                    chain.doFilter(req, resp);
-                    return;
-                }
-
-                chain.doFilter(req, resp);
+            if (sessionUser == null) {
+                resp.sendRedirect(req.getContextPath() + "/connexion");
                 return;
             }
 
+
+            HttpSession session = req.getSession(true);
+            session.setAttribute("sessionUserId", sessionUser.employees.id);
+            session.setAttribute("sessionUserRole", sessionUser.employees.roles.name);
+
+            String newSession = session.getId();
+
+            if (!Objects.equals(newSession, sessionId)) {
+
+                em.getTransaction().begin();
+                em.createQuery("update UserSession u set u.id = :newSession where u.id = :sessionId")
+                        .setParameter("newSession", newSession)
+                        .setParameter("sessionId", sessionId).executeUpdate();
+                em.getTransaction().commit();
+            }
+
+            chain.doFilter(req, resp);
+
+        }finally {
+            em.close();
         }
 
     }

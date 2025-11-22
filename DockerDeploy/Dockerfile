@@ -12,6 +12,7 @@ RUN mvn clean package -DskipTests
 FROM tomcat:10.1-jdk25
 
 RUN rm -rf /usr/local/tomcat/webapps/*
+RUN mkdir "/fichierTatoTalk"
 
 COPY --from=builder /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
 

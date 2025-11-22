@@ -39,7 +39,7 @@ public class MessageController extends HttpServlet {
         String requestedFileName = req.getParameter("fileName");
         if (requestedFileName != null && !requestedFileName.isEmpty()) {
 
-            String uploadPath = "/usr/local/tomcat/webapps/ROOT/WEB-INF/fichierTatoTalk";
+            String uploadPath = "/fichierTatoTalk";
             File file = new File(uploadPath, requestedFileName);
 
             if (file.exists()) {
@@ -134,7 +134,7 @@ public class MessageController extends HttpServlet {
                     String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
                     String uniqueName = System.currentTimeMillis() + "_" + fileName;
 
-                    String appPath = "/usr/local/tomcat/webapps/ROOT/WEB-INF/fichierTatoTalk";
+                    String appPath = "/fichierTatoTalk";
                     File uploadDir = new File(appPath);
                     if (!uploadDir.exists()) uploadDir.mkdirs();
 
