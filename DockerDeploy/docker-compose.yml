@@ -1,5 +1,5 @@
 services:
-  tatotalkserv1:
+  ACC-TatoTalk_server_1:
     image: lyam02/tatotalk:acc
     restart: always
     container_name: TatoTalk_server_1
@@ -10,7 +10,7 @@ services:
     networks:
       - tatotalknetwork
 
-  tatotalkserv2:
+  ACC-TatoTalk_server_2:
     image: lyam02/tatotalk:acc
     restart: always
     container_name: TatoTalk_server_2
@@ -21,7 +21,7 @@ services:
     networks:
       - tatotalknetwork
 
-  nginxloadbalancer:
+  ACC-Nginx_LoadBalancer:
     build: ./nginx
     restart: always
     ports:
@@ -35,4 +35,4 @@ services:
 networks:
   tatotalknetwork:
     external: true
-    name: tatotalk-network
+    name: ACC-tatotalk-network
