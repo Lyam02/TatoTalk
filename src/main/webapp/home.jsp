@@ -88,7 +88,6 @@
 
         var employee = $('.employee[data-employeeid]').last();
         var employeeid = employee.data('employeeid');
-        console.log(messageid);
 
         $.get('verif', {
             messageId: messageid,
