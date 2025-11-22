@@ -57,9 +57,14 @@ public class FilterController implements Filter {
 
                 if (!Objects.equals(newSession, sessionId)){
 
+                    em.getTransaction().begin();
+
                     em.createQuery("update UserSession u set u.id = :newSession where u.id = :sessionId")
                             .setParameter("newSession", newSession)
                             .setParameter("sessionId", sessionId).executeUpdate();
+
+                  em.getTransaction().commit();
+                  em.close();
 
                     chain.doFilter(req, resp);
                     return;
