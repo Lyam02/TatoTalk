@@ -30,7 +30,7 @@ public class FilterController implements Filter {
             path.startsWith("/vendor") ||
             path.startsWith("/Shared") ||
             path.startsWith("/mdp-oublie") ||
-            path.startsWith("newMdp")) {
+            path.startsWith("/newMdp")) {
 
             chain.doFilter(req, resp);
             return;
