@@ -1,4 +1,3 @@
-# Stage 1 : Build
 FROM maven:3.9-eclipse-temurin-25 AS builder
 
 WORKDIR /app
@@ -8,10 +7,13 @@ COPY ../src ./src
 
 RUN mvn clean package -DskipTests
 
-# Stage 2 : Runtime
 FROM tomcat:10.1-jdk25
 
+ENV TZ=Europe/Paris
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 RUN rm -rf /usr/local/tomcat/webapps/*
+RUN mkdir "/fichierTatoTalk"
 
 COPY --from=builder /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
