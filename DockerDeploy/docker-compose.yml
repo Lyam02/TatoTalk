@@ -1,8 +1,8 @@
 services:
-  ACC-TatoTalk_server_1:
+  tatotalkserv1:
     image: lyam02/tatotalk:acc
     restart: always
-    container_name: TatoTalk_server_1
+    container_name: ACC-TatoTalk_server_1
     volumes:
       - ./redisson.yaml:/usr/local/tomcat/conf/redisson.yaml
     ports:
@@ -10,10 +10,10 @@ services:
     networks:
       - tatotalknetwork
 
-  ACC-TatoTalk_server_2:
+  tatotalkserv2:
     image: lyam02/tatotalk:acc
     restart: always
-    container_name: TatoTalk_server_2
+    container_name: ACC-TatoTalk_server_2
     volumes:
       - ./redisson.yaml:/usr/local/tomcat/conf/redisson.yaml
     ports:
@@ -21,16 +21,17 @@ services:
     networks:
       - tatotalknetwork
 
-  ACC-Nginx_LoadBalancer:
+  nginxloadbalancer:
     build: ./nginx
     restart: always
+    container_name: ACC-Nginx_LoadBalancer
     ports:
       - 8081:80
     networks:
       - tatotalknetwork
     depends_on:
-      - ACC-TatoTalk_server_1
-      - ACC-TatoTalk_server_2
+      - tatotalkserv1
+      - tatotalkserv2
 
 networks:
   tatotalknetwork:
