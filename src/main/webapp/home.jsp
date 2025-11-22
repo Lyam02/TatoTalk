@@ -109,6 +109,8 @@
     function clearInput(){
         if ($('#send').val() !== ""){
             setTimeout(function(){$('#send').val('');},100)
+            setTimeout(function (){$('#hidden-file-input').val('');},100)
+            setTimeout(function (){$('#file-preview').addClass('d-none');},100)
         }
     }
 </script>

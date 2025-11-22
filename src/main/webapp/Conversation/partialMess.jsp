@@ -9,7 +9,16 @@
                 <div class="bg-white p-3 rounded-3 shadow-sm" style="word-wrap: break-word; overflow-wrap: break-word;">
                     <input type="hidden" id="messageId" value="${mess.id}">
                         ${mess.message_content}
-                </div>
+                        <c:if test="${mess.fichier != null}">
+                            <div class="mt-2 pt-2 border-top">
+                                <a href="${mess.fichier.stockage_url}" target="_blank" class="btn btn-sm btn-light border d-inline-flex align-items-center text-decoration-none text-dark w-100 justify-content-start mb-1">
+                                    <i class="bi bi-paperclip text-secondary me-2"></i>
+                                    <span class="text-truncate">${mess.fichier.file_name}</span>
+                                    <%--<i class="bi bi-download ms-auto text-secondary"></i>--%>
+                                </a>
+                            </div>
+                        </c:if>
+                    </div>
                 <small class="text-muted ms-2 text">${fn:substring(mess.edited_at, 11, 16)}</small>
             </div>
         </div>
@@ -19,7 +28,16 @@
         <div class="d-flex justify-content-end mb-3">
             <div style="max-width: 75%;">
                 <div class="text-white p-3 rounded-3 text" style="background: #3DB6AE; word-wrap: break-word; overflow-wrap: break-word;">
-                        ${mess.message_content}
+                    ${mess.message_content}
+                    <c:if test="${mess.fichier != null}">
+                        <div class="mt-2 pt-2 border-top border-white-50">
+                            <a href="${mess.fichier.stockage_url}" target="_blank" class="btn btn-sm btn-light border d-inline-flex align-items-center text-decoration-none text-dark w-100 justify-content-start mb-1">
+                                <i class="bi bi-paperclip text-secondary me-2"></i>
+                                <span class="text-truncate">${mess.fichier.file_name}</span>
+                                <%--<i class="bi bi-download ms-auto text-secondary"></i>--%>
+                            </a>
+                        </div>
+                    </c:if>
                 </div>
                 <small class="text-muted me-2 text d-block text-end">${fn:substring(mess.edited_at, 11, 16)}</small>
             </div>

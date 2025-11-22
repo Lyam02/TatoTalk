@@ -17,11 +17,55 @@
 </div>
 
 <div class="p-3 border-top">
-  <form action="mess" target="#messages">
+  <div id="file-preview" class="d-none mb-2 bg-light p-2 rounded border position-relative">
+    <div class="d-flex align-items-center">
+      <i id="file-icon" class="bi fs-4 me-2"></i>
+      <span id="file-name" class="text-truncate" style="max-width: 200px;">Nom du fichier</span>
+      <button type="button" class="btn-close ms-auto" aria-label="Close" onclick="removeFile()"></button>
+    </div>
+  </div>
+
+  <form action="mess" target="#messages" method="POST" enctype="multipart/form-data">
+    <input type="file" id="hidden-file-input" name="fichierLink" style="display: none;" onchange="fileSelect(event)">
+
     <div class="input-group">
+
       <input id="send" type="text" class="form-control bg-white me-1" name="message" required placeholder="Tapez votre message...">
       <input type="hidden" value="${employee.id}" name="employeeId">
-      <button class="btn px-2" type="submit" onclick="clearInput()" style="background-color: #0b3d62"><i class="bi bi-send text-white"></i></button>
+
+      <button class="btn px-2" type="button" onclick="document.getElementById('hidden-file-input').click()" style="background-color: #0b3d62">
+        <i class="bi bi-paperclip text-white"></i>
+      </button>
+
+      <button class="btn px-2" type="submit" onclick="clearInput()" style="background-color: #0b3d62">
+        <i class="bi bi-send text-white"></i>
+      </button>
+
     </div>
+
   </form>
+
 </div>
+
+<script>
+  function fileSelect(event) {
+    var fileInput = event.target;
+    var file = fileInput.files[0];
+
+    var previewContainer = document.getElementById('file-preview');
+    var fileNameSpan = document.getElementById('file-name');
+    var fileIcon = document.getElementById('file-icon');
+
+    if (file) {
+      previewContainer.classList.remove('d-none');
+      fileNameSpan.textContent = file.name;
+      fileIcon.className = "bi fs-4 me-2 text-primary bi-file-earmark";
+    }
+  }
+
+  function removeFile() {
+    setTimeout(function (){$('#hidden-file-input').val('');},100)
+    setTimeout(function (){$('#file-preview').addClass('d-none');},100)
+  }
+
+</script>
