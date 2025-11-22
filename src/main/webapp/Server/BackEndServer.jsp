@@ -12,7 +12,7 @@
           <div class="card h-100 border-0 bg-light">
             <div class="card-body">
               <h6 class="text-muted text-uppercase small">Hostname</h6>
-              <p class="fs-5 mb-0 font-monospace">tatotalk-node-01</p>
+              <p class="fs-5 mb-0 font-monospace"><%= InetAddress.getLocalHost().getHostName() %></p>
             </div>
           </div>
         </div>
@@ -20,7 +20,7 @@
           <div class="card h-100 border-0 bg-light">
             <div class="card-body">
               <h6 class="text-muted text-uppercase small">IP Address</h6>
-              <p class="fs-5 mb-0 font-monospace">172.18.0.5</p>
+              <p class="fs-5 mb-0 font-monospace"><%= InetAddress.getLocalHost().getHostAddress() %></p>
             </div>
           </div>
         </div>
@@ -28,7 +28,9 @@
           <div class="card h-100 border-0 bg-light">
             <div class="card-body">
               <h6 class="text-muted text-uppercase small"><i class="bi bi-pc-display me-1"></i>Operating System</h6>
-              <p class="fs-5 mb-0">Linux 5.15.0-91-generic (amd64)</p>
+              <p class="fs-5 mb-0"><%= System.getProperty("os.name") + " " +
+                      System.getProperty("os.version") + " (" +
+                      System.getProperty("os.arch") + ")" %></p>
             </div>
           </div>
         </div>
@@ -36,7 +38,7 @@
           <div class="card h-100 border-0 bg-light">
             <div class="card-body">
               <h6 class="text-muted text-uppercase small"><i class="bi bi-cup-hot me-1"></i>Java Version</h6>
-              <p class="fs-5 mb-0">21.0.2</p>
+              <p class="fs-5 mb-0"><%=System.getProperty("java.version")%></p>
             </div>
           </div>
         </div>
