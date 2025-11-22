@@ -16,26 +16,28 @@
             <div class="overflow-auto flex-grow-1" style="max-height: calc(100vh - 135px);">
                 <c:forEach var="employe" items="${employees}">
                     <c:if test="${employe.id ne sessionUserId}">
-                    <a href="conv?employeeId=${employe.id}" target="#partialConv" class="mb-0 text-black text-decoration-none">
-                            <div class="user hover-highlight d-flex align-items-center p-3" data-username="${employe.prenom} ${employe.nom}">
-                                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 50px; height: 50px; min-width: 50px;">
-                                        ${fn:toUpperCase(fn:substring(employe.prenom, 0, 1))}${fn:toUpperCase(fn:substring(employe.nom, 0, 1))}
+                        <div class="user d-flex align-items-center p-3"
+                             data-username="${employe.prenom} ${employe.nom}"
+                             data-employeeid="${employe.id}">
+                            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 50px; height: 50px; min-width: 50px;">
+                                    ${fn:toUpperCase(fn:substring(employe.prenom, 0, 1))}${fn:toUpperCase(fn:substring(employe.nom, 0, 1))}
+                            </div>
+                            <div class="flex-grow-1 overflow-hidden">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h6><a href="conv?employeeId=${employe.id}" target="#partialConv" class="mb-0 text-black text-decoration-none">${employe.prenom} ${employe.nom}</a></h6>
+                                    </div>
+                                    <div class="ms-2 flex-shrink-0">
+                                        <small class="text-muted message-time" id="message-time-${employe.id}"></small>
+                                    </div>
                                 </div>
-                                <div class="flex-grow-1 overflow-hidden">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div class="flex-grow-1">
-                                            <h6>${employe.prenom} ${employe.nom}</h6>
-                                        </div>
-                                        <div class="ms-2 flex-shrink-0">
-                                            <small class="text-muted">12:34</small>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <small class="text-muted text-truncate d-block" style="max-width: 150px;"></small>
-                                    </div>
+                                <div>
+                                    <small class="text-muted text-truncate d-block message-preview"
+                                           id="message-preview-${employe.id}"
+                                           style="max-width: 150px;"></small>
                                 </div>
                             </div>
-                    </a>
+                        </div>
                     </c:if>
                 </c:forEach>
             </div>
@@ -46,15 +48,12 @@
         </div>
     </div>
 </div>
-
+</div>
 
 <style>
     .hidden {
         display: none !important;
     }
-     .hover-highlight:hover {
-         background-color: #e9f8f8;
-     }
 </style>
 
 <script>
@@ -81,7 +80,30 @@
 </script>
 
 <script>
+
+    function loadLastMessages() {
+        $.get('lastMessage', function(response) {
+
+            $.each(response, function(employeeId, messageData) {
+                $('#message-preview-' + employeeId).text(messageData.messageContent);
+
+                // Mettre à jour l'heure
+                $('#message-time-' + employeeId).text(messageData.createdAt);
+            });
+        }, 'json').fail(function() {
+            console.error('Erreur lors du chargement des derniers messages');
+        });
+    }
+
+    $(document).ready(function() {
+        loadLastMessages();
+    });
+</script>
+
+<script>
     setInterval(function refresh (){
+
+        loadLastMessages();
 
         var lastMessageDiv = $('.message[data-messageid]').last();
         var messageid = lastMessageDiv.data('messageid');
