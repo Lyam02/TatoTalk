@@ -1,4 +1,4 @@
-package com.tatotalk.controller;
+package com.tatotalk.controller.server;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
