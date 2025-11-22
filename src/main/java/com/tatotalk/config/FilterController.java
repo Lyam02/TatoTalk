@@ -26,7 +26,11 @@ public class FilterController implements Filter {
         String path = req.getRequestURI().substring(req.getContextPath().length());
 
         if (path.equals("/") ||
-            path.startsWith("/connexion")) {
+            path.startsWith("/connexion") ||
+            path.startsWith("/vendor") ||
+            path.startsWith("/Shared") ||
+            path.startsWith("/mdp-oublie") ||
+            path.startsWith("newMdp")) {
 
             chain.doFilter(req, resp);
             return;
