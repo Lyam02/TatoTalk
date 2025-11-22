@@ -16,7 +16,7 @@
             <div class="overflow-auto flex-grow-1" style="max-height: calc(100vh - 135px);">
                 <c:forEach var="employe" items="${employees}">
                     <c:if test="${employe.id ne sessionUserId}">
-                        <div class="user d-flex align-items-center p-3"
+                        <div href="conv?employeeId=${employe.id}" target="#partialConv" class="mb-0 text-black text-decoration-none user d-flex align-items-center p-3"
                              data-username="${employe.prenom} ${employe.nom}"
                              data-employeeid="${employe.id}">
                             <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 50px; height: 50px; min-width: 50px;">
@@ -25,7 +25,7 @@
                             <div class="flex-grow-1 overflow-hidden">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div class="flex-grow-1">
-                                        <h6><a href="conv?employeeId=${employe.id}" target="#partialConv" class="mb-0 text-black text-decoration-none">${employe.prenom} ${employe.nom}</a></h6>
+                                        <h6>${employe.prenom} ${employe.nom}</h6>
                                     </div>
                                     <div class="ms-2 flex-shrink-0">
                                         <small class="text-muted message-time" id="message-time-${employe.id}"></small>
@@ -48,15 +48,17 @@
         </div>
     </div>
 </div>
-</div>
 
 <style>
     .hidden {
         display: none !important;
     }
+
+    .user:hover {
+        background-color: #e9f8f8 !important;
+    }
+
 </style>
-
-
 
 
 <script>
