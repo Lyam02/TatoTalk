@@ -31,7 +31,7 @@ public class VerifMessController extends HttpServlet {
             messageId = Integer.parseInt(req.getParameter("messageId"));
         }catch (NumberFormatException ex){
             resp.setContentType("application/json");
-            resp.getWriter().write("{\"isTheNewest\": false}");
+            resp.getWriter().write("{\"isTheNewest\": true}");
             return;
         }
 
