@@ -4,7 +4,7 @@
 
 <c:forEach var="mess" items="${messages}">
     <c:if test="${mess.sendTo.id eq sessionUserId}">
-        <div class="d-flex justify-content-start mb-3" data-messageid="${mess.id}">
+        <div class="message d-flex justify-content-start mb-3" data-messageid="${mess.id}">
             <div style="max-width: 75%;">
                 <div class="bg-white p-3 rounded-3 shadow-sm" style="word-wrap: break-word; overflow-wrap: break-word;">
                     <input type="hidden" id="messageId" value="${mess.id}">
