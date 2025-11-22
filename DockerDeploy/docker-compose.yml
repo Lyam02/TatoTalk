@@ -4,7 +4,7 @@ services:
     restart: always
     container_name: ACC-TatoTalk_server_1
     volumes:
-      - ./redisson.yaml:/usr/local/tomcat/conf/redisson.yaml
+      - fichiertatotalk:/usr/local/tomcat/webapps/ROOT/WEB-INF/fichierTatoTalk
     ports:
       - 8080:8080
     networks:
@@ -15,7 +15,7 @@ services:
     restart: always
     container_name: ACC-TatoTalk_server_2
     volumes:
-      - ./redisson.yaml:/usr/local/tomcat/conf/redisson.yaml
+      - fichiertatotalk:/usr/local/tomcat/webapps/ROOT/WEB-INF/fichierTatoTalk
     ports:
       - 8082:8080
     networks:
@@ -32,6 +32,10 @@ services:
     depends_on:
       - tatotalkserv1
       - tatotalkserv2
+
+volumes:
+  fichiertatotalk:
+    external: true
 
 networks:
   tatotalknetwork:
