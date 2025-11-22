@@ -29,8 +29,8 @@ services:
     networks:
       - tatotalknetwork
     depends_on:
-      - tatotalkserv1
-      - tatotalkserv2
+      - ACC-TatoTalk_server_1
+      - ACC-TatoTalk_server_2
 
 networks:
   tatotalknetwork:
