@@ -31,6 +31,7 @@
     <div class="input-group">
 
       <input id="send" type="text" class="form-control bg-white me-1" name="message" required placeholder="Tapez votre message...">
+      <input type="hidden" id="messId" value="0" name="messageId">
       <input type="hidden" value="${employee.id}" name="employeeId">
 
       <button class="btn px-2" type="button" onclick="document.getElementById('hidden-file-input').click()" style="background-color: #0b3d62">
