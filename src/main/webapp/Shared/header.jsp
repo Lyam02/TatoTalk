@@ -62,9 +62,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/home"><i class="fs-5 bi-chat-fill me-2" style="color: #53758d"></i>Messages</a>
                 </li>
-                <li class="nav-item">
+                <%--<li class="nav-item">
                     <a class="nav-link" href="#"><i class="fs-5 bi-people-fill me-2" style="color: #53758d"></i>Groupes</a>
-                </li>
+                </li>--%>
                 <div class="dropup pb-4" style="margin-top: 63vh;">
                     <a class="text-decoration-none" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fs-2 bi-gear-wide-connected" style="color: #53758d; margin-left: 70px"></i>

@@ -3,8 +3,27 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 
+<c:set var="currentDate" value=""/>
 
-<c:forEach var="mess" items="${messages}">
+<c:forEach var="mess" items="${messages}" varStatus="status">
+
+    <c:set var="messageDate" value="${fn:substring(mess.edited_at, 0, 10)}" />
+
+    <c:if test="${messageDate != currentDate}">
+        <c:if test="${!status.first}">
+            <div class="date-separator">
+                <div class="date-line"></div>
+                <c:set var="dateParts" value="${fn:split(messageDate, '-')}" />
+
+                <span class="date-text">
+                         ${dateParts[2]}-${dateParts[1]}-${dateParts[0]}
+                </span>
+                <div class="date-line"></div>
+            </div>
+        </c:if>
+        <c:set var="currentDate" value="${messageDate}" />
+    </c:if>
+
     <c:if test="${mess.sendTo.id eq sessionUserId}">
         <div class="message d-flex justify-content-start mb-3" data-messageid="${mess.id}">
             <div style="max-width: 75%;">
@@ -62,6 +81,30 @@
 </script>
 
 <style>
+
+    .date-separator {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        gap: 15px;
+    }
+
+    .date-line {
+        flex: 1;
+        height: 1px;
+        background-color: #ddd;
+    }
+
+    .date-text {
+        color: #888;
+        font-size: 0.85rem;
+        font-weight: 500;
+        white-space: nowrap;
+        padding: 5px 10px;
+        background-color: #f5f5f5;
+        border-radius: 12px;
+    }
+
     .message-container {
         position: relative;
     }
