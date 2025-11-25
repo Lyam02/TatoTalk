@@ -117,6 +117,9 @@ public class MessageController extends HttpServlet {
         EntityManager em = emf.createEntityManager();
 
         try {
+
+            int messageId = Integer.parseInt(req.getParameter("messageId"));
+
             int employeeId = Integer.parseInt(req.getParameter("employeeId"));
             Employees employeeSendTo = em.find(Employees.class, employeeId);
             Employees employeeSendBy = em.find(Employees.class, sessionUserId);
@@ -125,6 +128,27 @@ public class MessageController extends HttpServlet {
             Part filePart = req.getPart("fichierLink");
 
             boolean hasFile = filePart != null && filePart.getSize() > 0;
+
+
+            if (messageId != 0){
+                em.getTransaction().begin();
+
+                em.createQuery("update Messages m set m.message_content = :messageContent where m.id = :messageId")
+                        .setParameter("messageContent", messageContent).setParameter("messageId", messageId).executeUpdate();
+
+                em.getTransaction().commit();
+
+                List<Messages> messagesList = em.createQuery("select m from Messages m where (m.sendTo.id = :employeeId and m.sendBy.id = :sessionUserId) " +
+                                "or (m.sendTo.id = :sessionUserId and m.sendBy.id = :employeeId) order by m.edited_at", Messages.class)
+                        .setParameter("employeeId", employeeId).setParameter("sessionUserId", sessionUserId).getResultList();
+
+                req.setAttribute("messages", messagesList);
+                req.setAttribute("employeeSendTo", employeeSendTo);
+                req.setAttribute("employeeSendBy", employeeSendBy);
+
+                req.getRequestDispatcher("Conversation/partialMess.jsp").forward(req, resp);
+                return;
+            }
 
             if (hasFile || (messageContent != null && !messageContent.isEmpty())) {
                 em.getTransaction().begin();
