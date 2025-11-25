@@ -129,7 +129,6 @@ public class MessageController extends HttpServlet {
 
             boolean hasFile = filePart != null && filePart.getSize() > 0;
 
-
             if (messageId != 0){
                 em.getTransaction().begin();
 

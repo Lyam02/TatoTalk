@@ -40,6 +40,6 @@ public class ConversationController extends HttpServlet {
 
         em.close();
 
-        request.getRequestDispatcher("Conversation/partialConv.jsp").forward(request, response);
+        request.getRequestDispatcher("Conversation/partialConv.jsp").include(request, response);
     }
 }

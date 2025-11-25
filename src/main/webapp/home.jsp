@@ -60,6 +60,23 @@
 
 </style>
 
+
+<script>
+    function deleteMess (button){
+
+        const messageid = $(button).data('messaid');
+        const employeeid = $(button).data('empid');
+
+        $.get('${pageContext.request.contextPath}/delete', {
+            messageId: messageid,
+            employeeId: employeeid
+        },function (response){
+            $("#messages").html(response);
+        })
+    }
+
+</script>
+
 <script>
     function editMessage(button){
         const messageId = $(button).data('message-id');

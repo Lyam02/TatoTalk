@@ -46,8 +46,11 @@
     <c:if test="${mess.sendTo.id eq employeeSendTo.id}">
         <div class="d-flex justify-content-end mb-3">
             <div style="max-width: 75%;" class="message-container">
-                <button onclick="editMessage(this)" data-message-content="${mess.message_content}" data-message-id="${mess.id}"  class="edit-mess btn btn-sm position-absolute end-0 hover-btn" style="top: 0;">
+                <button onclick="editMessage(this)" data-message-content="${mess.message_content}" data-message-id="${mess.id}"  class="edit-mess btn btn-sm position-absolute hover-btn" style="top: 0; right: 45px;">
                     <i class="fs-6 bi-pencil-fill"></i>
+                </button>
+                <button onclick="deleteMess(this)" data-messaid="${mess.id}" data-empid="${mess.sendTo.id}" class="delete-mess btn btn-sm position-absolute hover-btn" style="top: 0; right: 10px;">
+                    <i class="fs-6 bi-trash-fill" style="color: #d63939"></i>
                 </button>
                 <div class="text-white p-3 rounded-3 text" style="background: #3DB6AE; word-wrap: break-word; overflow-wrap: break-word;">
                     ${mess.message_content}
