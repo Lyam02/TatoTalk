@@ -60,6 +60,15 @@
 
 </style>
 
+<script>
+    function editMessage(button){
+        const messageId = $(button).data('message-id');
+        const messageContent = $(button).data('message-content');
+
+        $('#send').val(messageContent);
+        $('#messId').val(messageId);
+    }
+</script>
 
 <script>
     $(document).ready(function(){
@@ -136,6 +145,7 @@
     function clearInput(){
         if ($('#send').val() !== ""){
             setTimeout(function(){$('#send').val('');},100)
+            setTimeout(function (){$('#messId').val('0')}, 100)
             setTimeout(function (){$('#hidden-file-input').val('');},100)
             setTimeout(function (){$('#file-preview').addClass('d-none');},100)
         }
