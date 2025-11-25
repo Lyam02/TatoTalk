@@ -10,7 +10,6 @@
     <c:set var="messageDate" value="${fn:substring(mess.edited_at, 0, 10)}" />
 
     <c:if test="${messageDate != currentDate}">
-        <c:if test="${!status.first}">
             <div class="date-separator">
                 <div class="date-line"></div>
                 <c:set var="dateParts" value="${fn:split(messageDate, '-')}" />
@@ -20,7 +19,6 @@
                 </span>
                 <div class="date-line"></div>
             </div>
-        </c:if>
         <c:set var="currentDate" value="${messageDate}" />
     </c:if>
 
