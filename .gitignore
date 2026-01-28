@@ -3,6 +3,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+src/main/ressources/META-INF/persistence.xml
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
@@ -36,3 +38,5 @@ build/
 
 ### Mac OS ###
 .DS_Store
+nom-du-fichier.txt
+persistence.xml
