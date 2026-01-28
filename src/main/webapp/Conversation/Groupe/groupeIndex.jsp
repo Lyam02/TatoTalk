@@ -1,0 +1,49 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="../../Shared/header.jsp" %>
+
+
+<div class="d-flex justify-content-center my-3">
+    <div class="input-group" style="width: 900px;">
+            <span class="input-group-text border-end-0" style="font-size: 1.1rem; background-color: #f0f1f0;">
+                <i class="bi bi-search"></i>
+            </span>
+        <input id="search" type="search" class="form-control border-start-0" placeholder="Recherche" aria-label="Search" aria-describedby="search-addon" style="font-size: 1.1rem; padding: 0.6rem; background-color: #f0f1f0;" />
+    </div>
+</div>
+
+<div class="row h-100 g-0 mt-2">
+    <div class="col-6">
+        <div class="overflow-auto flex-grow-1" style="max-height: calc(100vh - 150px);">
+            <c:forEach var="employe" items="${employees}">
+                <c:if test="${employe.id ne sessionUserId}">
+                    <div class="user d-flex align-items-center p-3" data-username="${employe.prenom} ${employe.nom}">
+                        <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3 fw-bold" style="width: 50px; height: 50px; min-width: 50px;">
+                                ${fn:toUpperCase(fn:substring(employe.prenom, 0, 1))}${fn:toUpperCase(fn:substring(employe.nom, 0, 1))}
+                        </div>
+                        <div class="flex-grow-1 overflow-hidden">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <h6><a href="conv?employeeId=${employe.id}" target="#partialConv" class="mb-0 text-black text-decoration-none">${employe.prenom} ${employe.nom}</a></h6>
+                                </div>
+                                <div class="ms-2 flex-shrink-0">
+                                    <small class="text-muted">12:34</small>
+                                </div>
+                            </div>
+                            <div>
+                                <small class="text-muted text-truncate d-block" style="max-width: 150px;"></small>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div>
+    </div>
+
+    <div class="col-6 d-flex overflow-auto flex-column border-start" id="partialConv" style="height: 89vh;">
+
+    </div>
+</div>
+</div>
+
+
+<%@ include file="../../Shared/footer.jsp"%>

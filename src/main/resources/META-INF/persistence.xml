@@ -3,7 +3,41 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd"
              version="3.2">
-  <persistence-unit name="default">
+  <persistence-unit name="tatotalk" transaction-type="RESOURCE_LOCAL">
+
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+    <class>com.tatotalk.model.Employees</class>
+    <class>com.tatotalk.model.Conversations</class>
+    <class>com.tatotalk.model.Messages</class>
+    <class>com.tatotalk.model.Roles</class>
+    <class>com.tatotalk.model.Groupe</class>
+    <class>com.tatotalk.model.UserSession</class>
+    <class>com.tatotalk.model.Fichier</class>
+
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+    <properties>
+
+      <property name="jakarta.persistence.jdbc.url"
+                value="jdbc:mysql://MySql:3306/yato"/>
+      <property name="jakarta.persistence.jdbc.user"
+                value="root"/>
+      <property name="jakarta.persistence.jdbc.password"
+                value="040505"/>
+      <property name="jakarta.persistence.jdbc.driver"
+                value="com.mysql.cj.jdbc.Driver"/>
+
+      <property name="hibernate.dialect"
+                value="org.hibernate.dialect.MySQLDialect"/>
+      <property name="hibernate.hbm2ddl.auto"
+                value="update"/>
+      <property name="hibernate.show_sql"
+                value="true"/>
+      <property name="hibernate.format_sql"
+                value="true"/>
+
+    </properties>
 
   </persistence-unit>
 </persistence>
